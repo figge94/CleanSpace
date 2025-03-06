@@ -3,10 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { BlurView } from "expo-blur";
-import { StyleSheet, Platform } from "react-native"; // ✅ Importera StyleSheet
+import { StyleSheet, Platform } from "react-native";
 import HomeScreen from "./pages/Home";
 import ClothesScreen from "./pages/Clothes";
-import AboutScreen from "./pages/About";
+import DetailsScreen from "./pages/Details";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -29,6 +29,7 @@ function BottomTabs() {
       }}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Clothes" component={ClothesScreen} />
+      <Tab.Screen name="Details" component={DetailsScreen} />
     </Tab.Navigator>
   );
 }
@@ -42,9 +43,9 @@ function MainStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="About"
-        component={AboutScreen}
-        options={{ title: "Om", headerBackVisible: false }}
+        name="Details"
+        component={DetailsScreen}
+        options={{ title: "Detaljer", headerBackVisible: false }}
       />
     </Stack.Navigator>
   );

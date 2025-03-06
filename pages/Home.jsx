@@ -4,20 +4,17 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      {/* Appnamn */}
       <Text style={styles.title}>✨ CleanSpace ✨</Text>
 
-      {/* Beskrivning */}
       <Text style={styles.description}>
         Få bättre koll på dina kläder och organisera ditt utrymme med
         CleanSpace!
       </Text>
 
-      {/* Navigeringsknappar */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("About")}>
-        <Text style={styles.buttonText}>📖 Om appen</Text>
+        onPress={() => navigation.navigate("Details")}>
+        <Text style={styles.buttonText}>📖 Detaljer</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
