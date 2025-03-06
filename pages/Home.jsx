@@ -1,9 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#76a5af", "#f0f4f8"]} style={styles.container}>
       <Text style={styles.title}>✨ CleanSpace ✨</Text>
 
       <Text style={styles.description}>
@@ -20,9 +21,9 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("Clothes")}>
-        <Text style={styles.buttonText}>👕 Mina kläder</Text>
+        <Text style={styles.buttonText}> Min garderob</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -31,14 +32,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
     padding: 20
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 10,
-    color: "#333"
+    color: "#333",
+    fontFamily: "MsMadi-Regular",
+    marginBottom: 10
   },
   description: {
     fontSize: 16,

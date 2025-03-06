@@ -1,10 +1,10 @@
 import { Text, View, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons"; // ✅ Importera ikon
+import { MaterialIcons } from "@expo/vector-icons";
 
-export default function DetailsScreen({ navigation }) {
+export default function TipsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Detaljer</Text>
+      <Text>Tips</Text>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
@@ -15,7 +15,6 @@ export default function DetailsScreen({ navigation }) {
           borderRadius: 5,
           marginTop: 20
         }}>
-        <MaterialIcons name="arrow-back" size={20} color="white" />
         <Text style={{ color: "white", marginLeft: 5 }}>Gå tillbaka</Text>
       </TouchableOpacity>
     </View>

@@ -2,34 +2,69 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { BlurView } from "expo-blur";
-import { StyleSheet, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import HomeScreen from "./pages/Home";
 import ClothesScreen from "./pages/Clothes";
 import DetailsScreen from "./pages/Details";
+import TipsScreen from "./pages/Tips";
+import ProfileScreen from "./pages/Profile";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// 🎨 Funktion för att hämta ikoner dynamiskt
+const getTabBarIcon = (routeName, focused, color, size) => {
+  const icons = {
+    Home: focused ? "home-variant" : "home-variant-outline",
+    Clothes: focused ? "wardrobe" : "wardrobe-outline",
+    Tips: focused ? "lightbulb-on" : "lightbulb-outline",
+    Profile: focused ? "person-circle" : "person-circle-outline"
+  };
+
+  return routeName === "Profile" ? (
+    <Ionicons name={icons[routeName]} size={size} color={color} />
+  ) : (
+    <MaterialCommunityIcons name={icons[routeName]} size={size} color={color} />
+  );
+};
+
+// 🔹 Tab.Navigator med bättre kodstruktur
 function BottomTabs() {
   return (
     <Tab.Navigator
-      screenOptions={{
-        headerShown: false, // ✅ Dölj header i tabs för att slippa pilar
-        tabBarShowLabel: true,
-        tabBarStyle: { position: "absolute" },
-        tabBarBackground: () =>
-          Platform.OS === "web" ? null : ( // ✅ Fix för webben
-            <BlurView
-              tint="light"
-              intensity={100}
-              style={StyleSheet.absoluteFill}
-            />
-          )
-      }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Clothes" component={ClothesScreen} />
-      <Tab.Screen name="Details" component={DetailsScreen} />
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) =>
+          getTabBarIcon(route.name, focused, color, size),
+        tabBarActiveTintColor: "royalblue",
+        tabBarInactiveTintColor: "gray",
+        tabBarStyle: {
+          backgroundColor: "#f8f8f8",
+          paddingBottom: 5,
+          height: 60 // Gör navigeringen lite större
+        }
+      })}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: "Hem" }}
+      />
+      <Tab.Screen
+        name="Clothes"
+        component={ClothesScreen}
+        options={{ title: "Min garderob" }}
+      />
+      <Tab.Screen
+        name="Tips"
+        component={TipsScreen}
+        options={{ title: "Tips" }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: "Profil" }}
+      />
     </Tab.Navigator>
   );
 }
@@ -58,37 +93,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  blurContainer: {
-    flex: 1,
-    padding: 20,
-    margin: 16,
-    textAlign: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    borderRadius: 20
-  },
-  background: {
-    flex: 1,
-    flexWrap: "wrap",
-    ...StyleSheet.absoluteFill
-  },
-  box: {
-    width: "25%",
-    height: "20%"
-  },
-  boxEven: {
-    backgroundColor: "orangered"
-  },
-  boxOdd: {
-    backgroundColor: "gold"
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "600"
-  }
-});
