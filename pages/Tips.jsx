@@ -5,6 +5,7 @@ export default function TipsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Tips</Text>
+      <Text>Tips</Text>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{

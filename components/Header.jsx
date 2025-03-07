@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontFamily: "MsMadi-Regular", // ✅ Använd din font här!
+    fontFamily: "Outfit-Black", // ✅ Använd din font här!
     fontWeight: "bold",
     color: "#333"
   }

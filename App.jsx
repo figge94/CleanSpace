@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,6 +13,8 @@ import DetailsScreen from "./pages/Details";
 import TipsScreen from "./pages/Tips";
 import ProfileScreen from "./pages/Profile";
 
+SplashScreen.preventAutoHideAsync();
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -18,7 +23,7 @@ const getTabBarIcon = (routeName, focused, color, size) => {
   const icons = {
     Home: focused ? "home-variant" : "home-variant-outline",
     Clothes: focused ? "wardrobe" : "wardrobe-outline",
-    Tips: focused ? "lightbulb-on" : "lightbulb-outline",
+    Tips: focused ? "lightbulb-on" : "lightbulb-on-outline",
     Profile: focused ? "person-circle" : "person-circle-outline"
   };
 
@@ -42,7 +47,8 @@ function BottomTabs() {
         tabBarStyle: {
           backgroundColor: "#f8f8f8",
           paddingBottom: 5,
-          height: 60 // Gör navigeringen lite större
+          height: 60,
+          position: "absolute" // Gör navigeringen lite större
         }
       })}>
       <Tab.Screen
@@ -87,8 +93,22 @@ function MainStack() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Outfit-Black": require("./assets/fonts/Outfit-Black.ttf") // Kontrollera sökvägen!
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync(); // Döljer splash-screen när fonten laddats
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null; // Visa inget förrän fonten är inläst
+  }
+
   return (
-    <NavigationContainer>
+    <NavigationContainer onLayout={onLayoutRootView}>
       <MainStack />
     </NavigationContainer>
   );

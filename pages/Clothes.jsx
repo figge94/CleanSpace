@@ -30,6 +30,7 @@ export default function ClothesScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <Text>Min garderob</Text>
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
