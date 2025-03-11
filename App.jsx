@@ -1,8 +1,12 @@
 import * as React from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { useCallback, useContext } from "react";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme
+} from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +16,8 @@ import ClothesScreen from "./pages/Clothes";
 import DetailsScreen from "./pages/Details";
 import TipsScreen from "./pages/Tips";
 import ProfileScreen from "./pages/Profile";
+import StatisticsScreen from "./pages/Statistic";
+import { SettingsProvider, SettingsContext } from "./context/SettingsContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,21 +40,23 @@ const getTabBarIcon = (routeName, focused, color, size) => {
   );
 };
 
-// 🔹 Tab.Navigator med bättre kodstruktur
+// 🔹 Tab.Navigator med dynamiskt tema
 function BottomTabs() {
+  const { theme } = useContext(SettingsContext); // ✅ Hämta globalt tema
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) =>
           getTabBarIcon(route.name, focused, color, size),
-        tabBarActiveTintColor: "royalblue",
+        tabBarActiveTintColor: theme.buttonBackground, // ✅ Ändrar färg efter tema
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: "#f8f8f8",
+          backgroundColor: theme.cardBackground, // ✅ Ändrar bakgrund efter tema
           paddingBottom: 5,
           height: 60,
-          position: "absolute" // Gör navigeringen lite större
+          position: "absolute"
         }
       })}>
       <Tab.Screen
@@ -75,6 +83,7 @@ function BottomTabs() {
   );
 }
 
+// 🔹 Stack.Navigator med tema
 function MainStack() {
   return (
     <Stack.Navigator>
@@ -84,11 +93,34 @@ function MainStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Clothes"
+        component={ClothesScreen}
+        options={{ title: "Min garderob" }}
+      />
+      <Stack.Screen
         name="Details"
         component={DetailsScreen}
-        options={{ title: "Detaljer", headerBackVisible: false }}
+        options={{ title: "Detaljer" }}
+      />
+      <Stack.Screen
+        name="Statistics"
+        component={StatisticsScreen}
+        options={{ title: "Statistik" }}
       />
     </Stack.Navigator>
+  );
+}
+
+// 🔹 Huvudkomponent med globalt tema
+function AppContent() {
+  const { theme, darkMode } = useContext(SettingsContext); // ✅ Hämta tema
+
+  return (
+    <NavigationContainer
+      theme={darkMode ? DarkTheme : DefaultTheme} // ✅ Ändrar navigationstema
+    >
+      <MainStack />
+    </NavigationContainer>
   );
 }
 
@@ -99,17 +131,17 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await SplashScreen.hideAsync(); // Döljer splash-screen när fonten laddats
+      await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null; // Visa inget förrän fonten är inläst
+    return null;
   }
 
   return (
-    <NavigationContainer onLayout={onLayoutRootView}>
-      <MainStack />
-    </NavigationContainer>
+    <SettingsProvider>
+      <AppContent />
+    </SettingsProvider>
   );
 }
