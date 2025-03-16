@@ -24,7 +24,7 @@ SplashScreen.preventAutoHideAsync();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// 🎨 Funktion för att hämta ikoner dynamiskt
+// Funktion för att hämta ikoner dynamiskt
 const getTabBarIcon = (routeName, focused, color, size) => {
   const icons = {
     Home: focused ? "home-variant" : "home-variant-outline",

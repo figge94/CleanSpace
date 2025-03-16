@@ -1,18 +1,18 @@
 import React, { useCallback, useContext } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { SettingsContext } from "../context/SettingsContext"; // Importera temat
+import { SettingsContext } from "../context/SettingsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function HomeScreen({ navigation }) {
   const [fontsLoaded] = useFonts({
-    "Outfit-Black": require("../assets/fonts/Outfit-Black.ttf") // Kontrollera sökvägen
+    "Outfit-Black": require("../assets/fonts/Outfit-Black.ttf")
   });
 
-  const { theme } = useContext(SettingsContext); // Hämta temat
+  const { theme } = useContext(SettingsContext);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -28,20 +28,20 @@ export default function HomeScreen({ navigation }) {
     <View
       style={[styles.container, { backgroundColor: theme.background }]}
       onLayout={onLayoutRootView}>
-      {/* Välkomstbild med skugga */}
-      <Image
-        source={{ uri: "https://www.w3schools.com/howto/img_avatar.png" }}
-        style={[styles.image, { borderColor: theme.text }]}
-      />
+      {/* Snygg CleanSpace-sektion högst upp */}
+      <View
+        style={[
+          styles.headerSection,
+          { backgroundColor: theme.buttonBackground }
+        ]}>
+        <Text style={[styles.headerTitle, { color: theme.buttonText }]}>
+          CleanSpace
+        </Text>
+      </View>
 
-      {/* Appens namn */}
-      <Text style={[styles.title, { color: theme.text }]}>CleanSpace</Text>
-
-      {/* Välkomsttext */}
-      <Text style={[styles.subtitle, { color: theme.text }]}>Välkommen!</Text>
+      {/* Beskrivning */}
       <Text style={[styles.description, { color: theme.text }]}>
-        Få bättre koll på dina kläder och organisera ditt utrymme med
-        CleanSpace!
+        Organisera din garderob och skapa ordning i ditt hem på ett smart sätt!
       </Text>
 
       {/* Knapp: Gå till garderoben */}
@@ -75,43 +75,34 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
+// 🎨 **Förbättrad stil – Minimalistisk och modern design**
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center"
+  },
+  headerSection: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    paddingVertical: 60,
     alignItems: "center",
-    padding: 20
+    elevation: 5
   },
-  image: {
-    width: 130,
-    height: 130,
-    borderRadius: 65, // Rundad bild
-    marginBottom: 20,
-    borderWidth: 3,
-    borderColor: "#fff",
-    shadowColor: "#000", // Subtil skugga för en snygg effekt
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 6
-  },
-  title: {
-    fontSize: 48,
+  headerTitle: {
+    fontSize: 36,
     fontWeight: "bold",
-    marginBottom: 5,
     textTransform: "uppercase",
-    letterSpacing: 2 // Lite extra mellanrum mellan bokstäver
-  },
-  subtitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10
+    letterSpacing: 1.5
   },
   description: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
     marginBottom: 25,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    opacity: 0.8,
+    marginTop: 100 // Justering för att inte hamna under headern
   },
   button: {
     flexDirection: "row",

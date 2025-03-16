@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext"; // ✅ Importera inställningar
+import profilePic from "../assets/user.png";
 
 export default function ProfileScreen({ navigation }) {
   const { darkMode, toggleDarkMode, theme } = useContext(SettingsContext); // ✅ Hämta temat
@@ -8,23 +10,21 @@ export default function ProfileScreen({ navigation }) {
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Profilbild */}
-      <Image
-        source={{ uri: "https://www.w3schools.com/howto/img_avatar.png" }}
-        style={[styles.profileImage, { borderColor: theme.buttonBackground }]}
-      />
+      <Image source={profilePic} style={styles.profileImage} />
 
       {/* Användarnamn & e-post */}
-      <Text style={[styles.username, { color: theme.text }]}>Användare123</Text>
+      <Text style={[styles.username, { color: theme.text }]}>Webmaster</Text>
       <Text style={[styles.email, { color: theme.text }]}>
         user@example.com
       </Text>
 
-      {/* Sektion för statistik */}
+      {/* Statistik-knapp */}
       <TouchableOpacity
         style={[styles.button, { backgroundColor: theme.buttonBackground }]}
         onPress={() => navigation.navigate("Statistics")}>
+        <MaterialIcons name="bar-chart" size={22} color={theme.buttonText} />
         <Text style={[styles.buttonText, { color: theme.buttonText }]}>
-          📊 Visa Statistik
+          Statistik
         </Text>
       </TouchableOpacity>
 
@@ -38,6 +38,11 @@ export default function ProfileScreen({ navigation }) {
         <TouchableOpacity
           style={[styles.button, { backgroundColor: theme.buttonBackground }]}
           onPress={toggleDarkMode}>
+          <MaterialIcons
+            name={darkMode ? "wb-sunny" : "nightlight-round"}
+            size={22}
+            color={theme.buttonText}
+          />
           <Text style={[styles.buttonText, { color: theme.buttonText }]}>
             {darkMode ? "Byt till ljust läge" : "Byt till mörkt läge"}
           </Text>
@@ -47,47 +52,51 @@ export default function ProfileScreen({ navigation }) {
   );
 }
 
-// 📌 Styling för responsivt UI
+// 📌 Förbättrad stil – Minimalistisk och modern design
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20
+    paddingVertical: 30,
+    paddingHorizontal: 20
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 15,
-    borderWidth: 2
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    marginBottom: 15
   },
   username: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5
   },
   email: {
     fontSize: 16,
-    marginBottom: 20
+    opacity: 0.7
   },
   button: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 8,
-    marginTop: 20
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 15,
+    width: "90%",
+    justifyContent: "center"
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginLeft: 10
   },
   settingsContainer: {
-    marginTop: 40, // Lägger lite mellanrum mellan knapparna och inställningarna
+    marginTop: 30,
     alignItems: "center",
     width: "100%"
   },
   settingsHeader: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 15
   }

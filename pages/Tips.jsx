@@ -9,10 +9,14 @@ import {
   UIManager,
   Platform
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import { SettingsContext } from "../context/SettingsContext"; // ✅ Importera globalt tema
+import {
+  MaterialIcons,
+  FontAwesome5,
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
+import { SettingsContext } from "../context/SettingsContext";
 
-// Aktivera animationer på Android
+// 🏗️ Aktivera animationer på Android
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -24,9 +28,9 @@ export default function TipsScreen({ navigation }) {
   const [expandedTip, setExpandedTip] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("Alla");
 
-  const { theme } = useContext(SettingsContext); // ✅ Hämta temat
+  const { theme } = useContext(SettingsContext);
 
-  // Lista med kategoriserade tips
+  // 🎯 Lista med kategoriserade tips
   const allTips = [
     {
       id: "1",
@@ -84,22 +88,22 @@ export default function TipsScreen({ navigation }) {
     }
   ];
 
-  // Lista med kategorier
+  // 🎯 Lista med kategorier och ikoner
   const categories = [
-    "Alla",
-    "Förvaring",
-    "Organisering",
-    "Tvätt",
-    "Mer utrymme"
+    { name: "Alla", icon: "apps" },
+    { name: "Förvaring", icon: "box" },
+    { name: "Organisering", icon: "th-list" },
+    { name: "Tvätt", icon: "local-laundry-service" },
+    { name: "Mer utrymme", icon: "expand" }
   ];
 
-  // Filtrera tips baserat på vald kategori
+  // 🔍 Filtrera tips baserat på vald kategori
   const filteredTips =
     selectedCategory === "Alla"
       ? allTips
       : allTips.filter((tip) => tip.category === selectedCategory);
 
-  // Expandera eller kollapsa ett tips
+  // 🔄 Expandera eller kollapsa ett tips
   const toggleExpand = (id) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpandedTip(expandedTip === id ? null : id);
@@ -107,25 +111,29 @@ export default function TipsScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text style={[styles.header, { color: theme.text }]}>
-        🧥 Garderobstips
-      </Text>
+      <Text style={[styles.header, { color: theme.text }]}>Tips</Text>
 
-      {/* Kategoriknappar */}
+      {/* Kategoriknappar med ikoner */}
       <View style={styles.categoryContainer}>
         {categories.map((category) => (
           <TouchableOpacity
-            key={category}
+            key={category.name}
             style={[
               styles.categoryButton,
-              selectedCategory === category && {
+              selectedCategory === category.name && {
                 backgroundColor: theme.buttonBackground
               }
             ]}
-            onPress={() => setSelectedCategory(category)}>
+            onPress={() => setSelectedCategory(category.name)}>
+            <FontAwesome5
+              name={category.icon}
+              size={16}
+              color={theme.buttonText}
+              style={styles.categoryIcon}
+            />
             <Text
               style={[styles.categoryButtonText, { color: theme.buttonText }]}>
-              {category}
+              {category.name}
             </Text>
           </TouchableOpacity>
         ))}
@@ -137,6 +145,7 @@ export default function TipsScreen({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => toggleExpand(item.id)}
             style={[
               styles.tipCard,
@@ -163,50 +172,62 @@ export default function TipsScreen({ navigation }) {
             )}
           </TouchableOpacity>
         )}
+        contentContainerStyle={styles.listContent}
       />
     </View>
   );
 }
 
-// 📌 Styling med stöd för mörkt tema
+// 🎨 **Förbättrad stil med ikoner och modern design**
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    alignItems: "center"
+    paddingVertical: 20,
+    paddingHorizontal: 16
   },
   header: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    marginVertical: 20
+    textAlign: "center",
+    marginBottom: 20
   },
   categoryContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginBottom: 10
+    marginBottom: 15
   },
   categoryButton: {
-    backgroundColor: "lightgray",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    margin: 5
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 20,
+    margin: 5,
+    backgroundColor: "#e0e0e0",
+    elevation: 3
+  },
+  categoryIcon: {
+    marginRight: 8
   },
   categoryButtonText: {
-    fontSize: 14
+    fontSize: 14,
+    fontWeight: "bold"
+  },
+  listContent: {
+    paddingBottom: 20
   },
   tipCard: {
     width: "100%",
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    borderRadius: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+    borderRadius: 12,
     borderWidth: 1,
-    marginVertical: 5,
+    marginBottom: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
     elevation: 3
   },
   tipCardExpanded: {
@@ -218,11 +239,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   tipTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold"
   },
   tipText: {
     fontSize: 14,
-    marginTop: 5
+    marginTop: 8,
+    opacity: 0.9
   }
 });

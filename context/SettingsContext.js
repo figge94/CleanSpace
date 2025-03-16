@@ -8,16 +8,14 @@ export function SettingsProvider({ children }) {
   const [darkMode, setDarkMode] = useState(false);
   const [theme, setTheme] = useState(lightTheme);
 
-  // Läsa in användarinställningarna från AsyncStorage när appen startas
   useEffect(() => {
     async function loadSettings() {
       const savedDarkMode = await AsyncStorage.getItem("darkMode");
       if (savedDarkMode !== null) {
         const isDark = JSON.parse(savedDarkMode);
         setDarkMode(isDark);
-        setTheme(isDark ? darkTheme : lightTheme); // Ställ in temat direkt baserat på användarens preferens
+        setTheme(isDark ? darkTheme : lightTheme);
       } else {
-        // Om inget sparats tidigare, sätt till standard (light)
         setTheme(lightTheme);
       }
     }

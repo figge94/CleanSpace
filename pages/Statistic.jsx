@@ -7,26 +7,45 @@ import {
   FlatList
 } from "react-native";
 import { SettingsContext } from "../context/SettingsContext"; // ✅ Hämta globalt tema
-import { MaterialIcons } from "@expo/vector-icons"; // ✅ Lägg till ikoner
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function StatisticsScreen() {
   const { theme } = useContext(SettingsContext); // ✅ Hämta globalt tema
   const [data, setData] = useState(null);
+  const [clearedClothes, setClearedClothes] = useState([]); // ✅ Rensade kläder
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("https://mitt-api.findersson.se/items")
-      .then((response) => {
+    // Hämtar kläder från API
+    const fetchItems = async () => {
+      try {
+        setError(null);
+        const response = await fetch("https://mitt-api.findersson.se/items");
         if (!response.ok) throw new Error("Kunde inte hämta data");
-        return response.json();
-      })
-      .then((json) => setData(json))
-      .catch((error) => {
+        const json = await response.json();
+        setData(json);
+      } catch (error) {
         console.error(error);
         setError(error.message);
-      })
-      .finally(() => setLoading(false));
+      }
+    };
+
+    // Hämtar rensade kläder från AsyncStorage
+    const fetchClearedClothes = async () => {
+      try {
+        const storedCleared = await AsyncStorage.getItem("clearedClothes");
+        if (storedCleared) {
+          setClearedClothes(JSON.parse(storedCleared));
+        }
+      } catch (error) {
+        console.error("Kunde inte hämta rensade kläder:", error);
+      }
+    };
+
+    Promise.all([fetchItems(), fetchClearedClothes()]).finally(() =>
+      setLoading(false)
+    );
   }, []);
 
   if (isLoading)
@@ -50,8 +69,9 @@ export default function StatisticsScreen() {
       </View>
     );
 
-  // 📊 Beräkningar för statistiken
+  // 📊 Statistikberäkningar
   const totalItems = data.length;
+  const totalCleared = clearedClothes.length; // ✅ Antal rensade plagg
   const latestItem =
     data.sort((a, b) => new Date(b.lastUsed) - new Date(a.lastUsed))[0]?.name ||
     "Inget ännu";
@@ -69,29 +89,39 @@ export default function StatisticsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text style={[styles.title, { color: theme.text }]}>📊 Statistik</Text>
+      <Text style={[styles.title, { color: theme.text }]}>Statistik</Text>
+
+      {/* Totalt antal plagg */}
       <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <MaterialIcons name="category" size={30} color={theme.text} />
         <Text style={[styles.stat, { color: theme.text }]}>
-          🧥 Totalt antal plagg: {totalItems}
-        </Text>
-      </View>
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <MaterialIcons name="label" size={30} color={theme.text} />
-        <Text style={[styles.stat, { color: theme.text }]}>
-          📌 Vanligaste kategori: {mostCommonCategory}
-        </Text>
-      </View>
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <MaterialIcons name="access-time" size={30} color={theme.text} />
-        <Text style={[styles.stat, { color: theme.text }]}>
-          🔄 Senast använda plagg: {latestItem}
+          Totalt antal plagg: {totalItems}
         </Text>
       </View>
 
-      {/* 🏷️ Lista med klädantal per kategori */}
+      {/* Totalt antal rensade plagg */}
+      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
+        <Text style={[styles.stat, { color: theme.text }]}>
+          Rensade plagg: {totalCleared}
+        </Text>
+      </View>
+
+      {/* Vanligaste kategori */}
+      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
+        <Text style={[styles.stat, { color: theme.text }]}>
+          Vanligaste kategori: {mostCommonCategory}
+        </Text>
+      </View>
+
+      {/* Senast använda plagg */}
+      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
+        <Text style={[styles.stat, { color: theme.text }]}>
+          Senast använda plagg: {latestItem}
+        </Text>
+      </View>
+
+      {/* Lista med klädantal per kategori */}
       <Text style={[styles.subTitle, { color: theme.text }]}>
-        📁 Kläder per kategori:
+        Kläder per kategori:
       </Text>
       <FlatList
         data={Object.entries(categoryCount)}
@@ -109,21 +139,19 @@ export default function StatisticsScreen() {
   );
 }
 
-// 📌 Styling med stöd för mörkt tema
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: "center",
     justifyContent: "flex-start"
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 15
   },
   subTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginTop: 15,
     marginBottom: 10
@@ -146,11 +174,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
-    width: "90%",
+    gap: 6,
+    width: "100%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 2
   }
 });
