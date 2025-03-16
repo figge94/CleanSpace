@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { lightTheme, darkTheme } from "../styles/themes"; // ✅ Importera teman
+import { lightTheme, darkTheme } from "../styles/themes";
 
 export const SettingsContext = createContext();
 
@@ -22,13 +22,11 @@ export function SettingsProvider({ children }) {
     loadSettings();
   }, []);
 
-  // Toggle dark mode och uppdatera AsyncStorage
   const toggleDarkMode = async () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
     setTheme(newDarkMode ? darkTheme : lightTheme);
 
-    // Spara användarens val i AsyncStorage
     await AsyncStorage.setItem("darkMode", JSON.stringify(newDarkMode));
   };
 
