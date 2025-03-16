@@ -6,18 +6,18 @@ import {
   StyleSheet,
   FlatList
 } from "react-native";
-import { SettingsContext } from "../context/SettingsContext"; // ✅ Hämta globalt tema
+import { SettingsContext } from "../context/SettingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatisticStyle, GlobalStyle } from "../styles/styles";
 
 export default function StatisticsScreen() {
-  const { theme } = useContext(SettingsContext); // ✅ Hämta globalt tema
+  const { theme } = useContext(SettingsContext);
   const [data, setData] = useState(null);
-  const [clearedClothes, setClearedClothes] = useState([]); // ✅ Rensade kläder
+  const [clearedClothes, setClearedClothes] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Hämtar kläder från API
     const fetchItems = async () => {
       try {
         setError(null);
@@ -50,33 +50,42 @@ export default function StatisticsScreen() {
 
   if (isLoading)
     return (
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <View
+        style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
         <ActivityIndicator size="large" color={theme.text} />
       </View>
     );
   if (error)
     return (
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <Text style={[styles.errorText, { color: theme.text }]}>{error}</Text>
+      <View
+        style={[
+          StatisticStyle.container,
+          { backgroundColor: theme.background }
+        ]}>
+        <Text style={[StatisticStyle.errorText, { color: theme.text }]}>
+          {error}
+        </Text>
       </View>
     );
   if (!data || data.length === 0)
     return (
-      <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <Text style={[styles.infoText, { color: theme.text }]}>
+      <View
+        style={[
+          StatisticStyle.container,
+          { backgroundColor: theme.background }
+        ]}>
+        <Text style={[StatisticStyle.infoText, { color: theme.text }]}>
           Inga kläder hittades
         </Text>
       </View>
     );
 
-  // 📊 Statistikberäkningar
   const totalItems = data.length;
-  const totalCleared = clearedClothes.length; // ✅ Antal rensade plagg
+  const totalCleared = clearedClothes.length;
   const latestItem =
     data.sort((a, b) => new Date(b.lastUsed) - new Date(a.lastUsed))[0]?.name ||
     "Inget ännu";
 
-  // Vanligaste kategorin
   const categoryCount = data.reduce((acc, item) => {
     const category = item.category?.main || "Okänd";
     acc[category] = (acc[category] || 0) + 1;
@@ -88,39 +97,56 @@ export default function StatisticsScreen() {
     "Ingen kategori";
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text style={[styles.title, { color: theme.text }]}>Statistik</Text>
+    <View
+      style={[StatisticStyle.container, { backgroundColor: theme.background }]}>
+      <Text style={[StatisticStyle.title, { color: theme.text }]}>
+        Statistik
+      </Text>
 
-      {/* Totalt antal plagg */}
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <Text style={[styles.stat, { color: theme.text }]}>
+      <View
+        style={[
+          StatisticStyle.card,
+          { backgroundColor: theme.cardBackground }
+        ]}>
+        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
           Totalt antal plagg: {totalItems}
         </Text>
       </View>
 
-      {/* Totalt antal rensade plagg */}
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <Text style={[styles.stat, { color: theme.text }]}>
+      <View
+        style={[
+          StatisticStyle.card,
+          { backgroundColor: theme.cardBackground }
+        ]}>
+        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
           Rensade plagg: {totalCleared}
         </Text>
       </View>
 
       {/* Vanligaste kategori */}
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <Text style={[styles.stat, { color: theme.text }]}>
+      <View
+        style={[
+          StatisticStyle.card,
+          { backgroundColor: theme.cardBackground }
+        ]}>
+        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
           Vanligaste kategori: {mostCommonCategory}
         </Text>
       </View>
 
       {/* Senast använda plagg */}
-      <View style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-        <Text style={[styles.stat, { color: theme.text }]}>
+      <View
+        style={[
+          StatisticStyle.card,
+          { backgroundColor: theme.cardBackground }
+        ]}>
+        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
           Senast använda plagg: {latestItem}
         </Text>
       </View>
 
       {/* Lista med klädantal per kategori */}
-      <Text style={[styles.subTitle, { color: theme.text }]}>
+      <Text style={[StatisticStyle.subTitle, { color: theme.text }]}>
         Kläder per kategori:
       </Text>
       <FlatList
@@ -128,8 +154,11 @@ export default function StatisticsScreen() {
         keyExtractor={(item) => item[0]}
         renderItem={({ item }) => (
           <View
-            style={[styles.card, { backgroundColor: theme.cardBackground }]}>
-            <Text style={[styles.stat, { color: theme.text }]}>
+            style={[
+              StatisticStyle.card,
+              { backgroundColor: theme.cardBackground }
+            ]}>
+            <Text style={[StatisticStyle.stat, { color: theme.text }]}>
               {item[0]}: {item[1]} plagg
             </Text>
           </View>
@@ -138,48 +167,3 @@ export default function StatisticsScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: "flex-start"
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 15
-  },
-  subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 15,
-    marginBottom: 10
-  },
-  stat: {
-    fontSize: 16,
-    marginBottom: 5
-  },
-  errorText: {
-    fontSize: 16,
-    color: "red"
-  },
-  infoText: {
-    fontSize: 16,
-    color: "gray"
-  },
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    gap: 6,
-    width: "100%",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2
-  }
-});

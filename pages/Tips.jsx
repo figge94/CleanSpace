@@ -4,19 +4,14 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  StyleSheet,
   LayoutAnimation,
   UIManager,
   Platform
 } from "react-native";
-import {
-  MaterialIcons,
-  FontAwesome5,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext";
+import { TipsStyle, GlobalStyle } from "../styles/styles";
 
-// 🏗️ Aktivera animationer på Android
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -110,16 +105,17 @@ export default function TipsScreen({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text style={[styles.header, { color: theme.text }]}>Tips</Text>
+    <View
+      style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
+      <Text style={[TipsStyle.header, { color: theme.text }]}>Tips</Text>
 
       {/* Kategoriknappar med ikoner */}
-      <View style={styles.categoryContainer}>
+      <View style={TipsStyle.categoryContainer}>
         {categories.map((category) => (
           <TouchableOpacity
             key={category.name}
             style={[
-              styles.categoryButton,
+              TipsStyle.categoryButton,
               selectedCategory === category.name && {
                 backgroundColor: theme.buttonBackground
               }
@@ -129,10 +125,13 @@ export default function TipsScreen({ navigation }) {
               name={category.icon}
               size={16}
               color={theme.buttonText}
-              style={styles.categoryIcon}
+              style={TipsStyle.categoryIcon}
             />
             <Text
-              style={[styles.categoryButtonText, { color: theme.buttonText }]}>
+              style={[
+                TipsStyle.categoryButtonText,
+                { color: theme.buttonText }
+              ]}>
               {category.name}
             </Text>
           </TouchableOpacity>
@@ -148,15 +147,15 @@ export default function TipsScreen({ navigation }) {
             activeOpacity={0.8}
             onPress={() => toggleExpand(item.id)}
             style={[
-              styles.tipCard,
-              expandedTip === item.id && styles.tipCardExpanded,
+              TipsStyle.tipCard,
+              expandedTip === item.id && TipsStyle.tipCardExpanded,
               {
                 backgroundColor: theme.cardBackground,
                 borderColor: theme.borderColor
               }
             ]}>
-            <View style={styles.tipHeader}>
-              <Text style={[styles.tipTitle, { color: theme.text }]}>
+            <View style={TipsStyle.tipHeader}>
+              <Text style={[TipsStyle.tipTitle, { color: theme.text }]}>
                 {item.title}
               </Text>
               <MaterialIcons
@@ -166,85 +165,14 @@ export default function TipsScreen({ navigation }) {
               />
             </View>
             {expandedTip === item.id && (
-              <Text style={[styles.tipText, { color: theme.text }]}>
+              <Text style={[TipsStyle.tipText, { color: theme.text }]}>
                 {item.text}
               </Text>
             )}
           </TouchableOpacity>
         )}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={TipsStyle.listContent}
       />
     </View>
   );
 }
-
-// 🎨 **Förbättrad stil med ikoner och modern design**
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 16
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20
-  },
-  categoryContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginBottom: 15
-  },
-  categoryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 20,
-    margin: 5,
-    backgroundColor: "#e0e0e0",
-    elevation: 3
-  },
-  categoryIcon: {
-    marginRight: 8
-  },
-  categoryButtonText: {
-    fontSize: 14,
-    fontWeight: "bold"
-  },
-  listContent: {
-    paddingBottom: 20
-  },
-  tipCard: {
-    width: "100%",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3
-  },
-  tipCardExpanded: {
-    minHeight: 100
-  },
-  tipHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  tipTitle: {
-    fontSize: 18,
-    fontWeight: "bold"
-  },
-  tipText: {
-    fontSize: 14,
-    marginTop: 8,
-    opacity: 0.9
-  }
-});

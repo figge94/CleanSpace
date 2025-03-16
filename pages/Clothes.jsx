@@ -13,7 +13,8 @@ import {
 } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient"; // ✅ Lägg till gradient-effekt
+import { LinearGradient } from "expo-linear-gradient";
+import { GlobalStyle } from "../styles/styles";
 
 // Aktivera animationer på Android
 if (
@@ -73,7 +74,8 @@ export default function ClothesScreen({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View
+      style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
       <Text style={[styles.header, { color: theme.text }]}>Min garderob</Text>
 
       {error ? (
@@ -159,11 +161,6 @@ export default function ClothesScreen({ navigation }) {
 
 // Styling med collapsible kategorier och responsiv layout
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 16
-  },
   header: {
     fontSize: 26,
     fontWeight: "bold",
