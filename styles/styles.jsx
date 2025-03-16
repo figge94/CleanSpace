@@ -3,10 +3,9 @@ import { StyleSheet } from "react-native";
 export const GlobalStyle = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    paddingVertical: 60,
+    paddingVertical: 50,
     paddingHorizontal: 20,
-    justifyContent: "center"
+    backgroundColor: "#c7c7ff"
   },
   settingsContainer: {
     marginTop: 30,
@@ -51,9 +50,16 @@ export const GlobalStyle = StyleSheet.create({
     elevation: 5
   },
   title: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 15,
+    textAlign: "center"
+  },
+  subTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 15,
+    marginBottom: 10,
     textAlign: "center"
   },
   infoText: {
@@ -95,43 +101,6 @@ export const HeaderStyle = StyleSheet.create({
   }
 });
 
-export const ButtonStyle = StyleSheet.create({
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 14,
-    paddingHorizontal: 35,
-    borderRadius: 10,
-    marginTop: 15,
-    width: "80%",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 8,
-    textTransform: "uppercase"
-  },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 14,
-    borderRadius: 8,
-    marginTop: 20
-  },
-  buttonTextWhite: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 5
-  }
-});
-
 export const ProfileStyle = StyleSheet.create({
   container: {
     flex: 1,
@@ -139,12 +108,6 @@ export const ProfileStyle = StyleSheet.create({
     paddingVertical: 60,
     paddingHorizontal: 20,
     justifyContent: "center"
-  },
-  profileImage: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    marginBottom: 15
   },
   username: {
     fontSize: 24,
@@ -182,19 +145,22 @@ export const TagStyle = StyleSheet.create({
 });
 
 export const StatisticStyle = StyleSheet.create({
+  row: {
+    flex: 1,
+    justifyContent: "space-between", // 🆕 Jämn fördelning av korten
+    marginBottom: 10
+  },
   card: {
-    flexDirection: "row",
-    alignItems: "center",
+    flex: 1, // 🆕 Så att varje kort tar lika mycket plats
     padding: 15,
     borderRadius: 10,
-    marginBottom: 10,
-    gap: 6,
-    width: "100%",
+    margin: 5, // 🆕 Avstånd mellan korten
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 2
+    elevation: 2,
+    alignItems: "center"
   },
   stat: {
     fontSize: 16,
@@ -205,20 +171,21 @@ export const StatisticStyle = StyleSheet.create({
     padding: 20,
     justifyContent: "flex-start"
   },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    marginBottom: 15
-  },
-  subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 15,
-    marginBottom: 10
-  },
+
   infoText: {
     fontSize: 16,
     color: "gray"
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 5, // 🆕 Ger avstånd mellan titel och antal
+    textTransform: "capitalize" // 🆕 Gör första bokstaven stor
+  },
+  stat: {
+    fontSize: 16,
+    textAlign: "center"
   }
 });
 
@@ -308,75 +275,5 @@ export const DetailStyle = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginLeft: 5
-  }
-});
-
-export const TipsStyle = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 16
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20
-  },
-  categoryContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginBottom: 15
-  },
-  categoryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 20,
-    margin: 5,
-    backgroundColor: "#e0e0e0",
-    elevation: 3
-  },
-  categoryIcon: {
-    marginRight: 8
-  },
-  categoryButtonText: {
-    fontSize: 14,
-    fontWeight: "bold"
-  },
-  listContent: {
-    paddingBottom: 20
-  },
-  tipCard: {
-    width: "100%",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3
-  },
-  tipCardExpanded: {
-    minHeight: 100
-  },
-  tipHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  tipTitle: {
-    fontSize: 18,
-    fontWeight: "bold"
-  },
-  tipText: {
-    fontSize: 14,
-    marginTop: 8,
-    opacity: 0.9
   }
 });

@@ -1,14 +1,9 @@
 import { useEffect, useState, useContext } from "react";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  FlatList
-} from "react-native";
+import { View, Text, ActivityIndicator, FlatList } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatisticStyle, GlobalStyle } from "../styles/styles";
+import Button from "../components/Button";
 
 export default function StatisticsScreen() {
   const { theme } = useContext(SettingsContext);
@@ -31,7 +26,6 @@ export default function StatisticsScreen() {
       }
     };
 
-    // Hämtar rensade kläder från AsyncStorage
     const fetchClearedClothes = async () => {
       try {
         const storedCleared = await AsyncStorage.getItem("clearedClothes");
@@ -99,9 +93,7 @@ export default function StatisticsScreen() {
   return (
     <View
       style={[StatisticStyle.container, { backgroundColor: theme.background }]}>
-      <Text style={[StatisticStyle.title, { color: theme.text }]}>
-        Statistik
-      </Text>
+      <Text style={[GlobalStyle.title, { color: theme.text }]}>Statistik</Text>
 
       <View
         style={[
@@ -123,7 +115,6 @@ export default function StatisticsScreen() {
         </Text>
       </View>
 
-      {/* Vanligaste kategori */}
       <View
         style={[
           StatisticStyle.card,
@@ -134,7 +125,6 @@ export default function StatisticsScreen() {
         </Text>
       </View>
 
-      {/* Senast använda plagg */}
       <View
         style={[
           StatisticStyle.card,
@@ -145,21 +135,25 @@ export default function StatisticsScreen() {
         </Text>
       </View>
 
-      {/* Lista med klädantal per kategori */}
-      <Text style={[StatisticStyle.subTitle, { color: theme.text }]}>
+      <Text style={[GlobalStyle.subTitle, { color: theme.text }]}>
         Kläder per kategori:
       </Text>
       <FlatList
         data={Object.entries(categoryCount)}
         keyExtractor={(item) => item[0]}
+        numColumns={2} // 🆕 Grid-layout med två kolumner
+        columnWrapperStyle={StatisticStyle.row} // 🆕 Anpassa radlayout
         renderItem={({ item }) => (
           <View
             style={[
               StatisticStyle.card,
               { backgroundColor: theme.cardBackground }
             ]}>
+            <Text style={[StatisticStyle.cardTitle, { color: theme.text }]}>
+              {item[0]}
+            </Text>
             <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-              {item[0]}: {item[1]} plagg
+              {item[1]} plagg
             </Text>
           </View>
         )}

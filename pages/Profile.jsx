@@ -1,20 +1,29 @@
 import { useContext } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { Text, View, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext";
 import profilePic from "../assets/user.png";
-import { ProfileStyle, ButtonStyle } from "../styles/styles";
+import { ProfileStyle } from "../styles/styles";
+import { ImageStyle } from "../styles/ImageStyle";
+import Button from "../components/Button"; // 🆕 Importera knappen
+import { Animated } from "react-native";
 
 export default function ProfileScreen({ navigation }) {
   const { darkMode, toggleDarkMode, theme } = useContext(SettingsContext);
 
+  const transition = new Animated.Value(darkMode ? 1 : 0);
+
+  Animated.timing(transition, {
+    toValue: darkMode ? 0 : 1,
+    duration: 300,
+    useNativeDriver: false
+  }).start();
+
   return (
     <View
       style={[ProfileStyle.container, { backgroundColor: theme.background }]}>
-      {/* Profilbild */}
-      <Image source={profilePic} style={ProfileStyle.profileImage} />
+      <Image source={profilePic} style={ImageStyle.profileImage} />
 
-      {/* Användarnamn & e-post */}
       <Text style={[ProfileStyle.username, { color: theme.text }]}>
         Webmaster
       </Text>
@@ -22,41 +31,33 @@ export default function ProfileScreen({ navigation }) {
         user@example.com
       </Text>
 
-      {/* Statistik-knapp */}
-      <TouchableOpacity
-        style={[
-          ButtonStyle.button,
-          { backgroundColor: theme.buttonBackground }
-        ]}
-        onPress={() => navigation.navigate("Statistics")}>
-        <MaterialIcons name="bar-chart" size={22} color={theme.buttonText} />
-        <Text style={[ButtonStyle.buttonText, { color: theme.buttonText }]}>
-          Statistik
-        </Text>
-      </TouchableOpacity>
+      {/* 🆕 Använd vår Button-komponent istället för inline-komponent */}
+      <Button
+        icon={
+          <MaterialIcons name="bar-chart" size={22} color={theme.buttonText} />
+        }
+        title="Statistik"
+        onPress={() => navigation.navigate("Statistics")}
+        theme={theme}
+      />
 
-      {/* Inställningar-sektion */}
       <View style={ProfileStyle.settingsContainer}>
         <Text style={[ProfileStyle.settingsHeader, { color: theme.text }]}>
           Inställningar
         </Text>
 
-        {/* Knapp: Växla mörkt/ljust läge */}
-        <TouchableOpacity
-          style={[
-            ButtonStyle.button,
-            { backgroundColor: theme.buttonBackground }
-          ]}
-          onPress={toggleDarkMode}>
-          <MaterialIcons
-            name={darkMode ? "wb-sunny" : "nightlight-round"}
-            size={22}
-            color={theme.buttonText}
-          />
-          <Text style={[ButtonStyle.buttonText, { color: theme.buttonText }]}>
-            {darkMode ? "Byt till ljust läge" : "Byt till mörkt läge"}
-          </Text>
-        </TouchableOpacity>
+        <Button
+          icon={
+            <MaterialIcons
+              name={darkMode ? "wb-sunny" : "nightlight-round"}
+              size={22}
+              color={theme.buttonText}
+            />
+          }
+          title={darkMode ? "Byt till ljust läge" : "Byt till mörkt läge"}
+          onPress={toggleDarkMode}
+          theme={theme}
+        />
       </View>
     </View>
   );

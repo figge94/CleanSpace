@@ -1,36 +1,37 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { CardStyle } from "../styles/CardStyle";
 
-const Card = ({ title, content }) => {
+export default function Card({ item, theme, onPress }) {
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.content}>{content}</Text>
-    </View>
+    <TouchableOpacity
+      style={[CardStyle.card, { backgroundColor: theme.cardBackground }]}
+      onPress={onPress}
+      activeOpacity={0.8}>
+      <View style={CardStyle.cardContent}>
+        <View>
+          <Text style={[CardStyle.title, { color: theme.text }]}>
+            {item.name}
+          </Text>
+          <Text style={[CardStyle.text, { color: theme.text }]}>
+            ✨ Skick: {item.condition}
+          </Text>
+          <Text style={[CardStyle.text, { color: theme.text }]}>
+            📅 Senast använd:{" "}
+            {item.lastUsed
+              ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
+              : "Okänt"}
+          </Text>
+        </View>
+
+        <MaterialIcons
+          name="chevron-right"
+          size={24}
+          color={theme.text}
+          style={CardStyle.arrowIcon}
+        />
+      </View>
+    </TouchableOpacity>
   );
-};
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "white",
-    padding: 15,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-    marginVertical: 10,
-    marginHorizontal: 20
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold"
-  },
-  content: {
-    fontSize: 14,
-    marginTop: 5
-  }
-});
-
-export default Card;
+}

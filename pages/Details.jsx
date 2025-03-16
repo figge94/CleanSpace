@@ -1,13 +1,27 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SettingsContext } from "../context/SettingsContext";
 import { DetailStyle, GlobalStyle } from "../styles/styles";
+import { BackHandler } from "react-native";
 
 export default function DetailsScreen({ route, navigation }) {
   const { theme } = useContext(SettingsContext);
   const item = route.params?.item;
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
 
   if (!item) {
     return (
@@ -73,11 +87,7 @@ export default function DetailsScreen({ route, navigation }) {
           </View>
         </View>
 
-        <InfoRow
-          icon="progress-check"
-          text={`Skick: ${item.condition}`}
-          theme={theme}
-        />
+        <InfoRow text={`Skick: ${item.condition}`} theme={theme} />
 
         <InfoRow
           icon="history"
