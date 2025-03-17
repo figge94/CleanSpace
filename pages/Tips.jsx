@@ -3,9 +3,9 @@ import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext";
 import { GlobalStyle } from "../styles/styles";
-import { TipsStyle } from "../styles/TipsStyle";
 import TipItem from "../components/TipItem";
-import allTips from "../data/TipsData";
+import { TipsStyle } from "../styles/TipsStyle";
+import allTips from "../data/TipsData"; // 📌 Importera tipsen
 
 export default function TipsScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState("Alla");
@@ -68,6 +68,7 @@ export default function TipsScreen({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <TipItem item={item} theme={theme} />}
         contentContainerStyle={TipsStyle.content}
+        ListFooterComponent={<View style={{ height: 30 }} />}
       />
     </View>
   );

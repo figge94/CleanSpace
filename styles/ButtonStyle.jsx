@@ -8,7 +8,7 @@ const ButtonStyle = StyleSheet.create({
     paddingHorizontal: 35,
     borderRadius: 10,
     marginTop: 15,
-    width: "80%",
+    width: "90%",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },

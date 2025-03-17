@@ -1,12 +1,35 @@
 import { StyleSheet } from "react-native";
 
 export const ImageStyle = StyleSheet.create({
-  wardrobeImage: {
+  headerContainer: {
     width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 250
+  },
+  wardrobeImage: {
+    position: "absolute",
+    top: 0,
     height: 200,
     resizeMode: "cover",
-    marginTop: 90,
-    marginHorizontal: 20
+    width: "100%",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5
+  },
+  shadowContainer: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: 200,
+    elevation: 5, // Android
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    backgroundColor: "rgba(0,0,0,0.3)"
   },
   profileImage: {
     width: 180,

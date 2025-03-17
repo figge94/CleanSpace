@@ -70,6 +70,15 @@ export const GlobalStyle = StyleSheet.create({
     fontSize: 18,
     color: "red",
     textAlign: "center"
+  },
+  contentContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10
+  },
+  buttonContainer: {
+    width: "100%",
+    alignItems: "center"
   }
 });
 
@@ -145,47 +154,52 @@ export const TagStyle = StyleSheet.create({
 });
 
 export const StatisticStyle = StyleSheet.create({
-  row: {
-    flex: 1,
-    justifyContent: "space-between", // 🆕 Jämn fördelning av korten
-    marginBottom: 10
-  },
-  card: {
-    flex: 1, // 🆕 Så att varje kort tar lika mycket plats
-    padding: 15,
-    borderRadius: 10,
-    margin: 5, // 🆕 Avstånd mellan korten
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
-    alignItems: "center"
-  },
-  stat: {
-    fontSize: 16,
-    marginBottom: 5
-  },
   container: {
     flex: 1,
     padding: 20,
     justifyContent: "flex-start"
   },
-
-  infoText: {
-    fontSize: 16,
-    color: "gray"
+  statsWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    paddingVertical: 10
   },
-  cardTitle: {
-    fontSize: 18,
+  row: {
+    flex: 1,
+    justifyContent: "space-between",
+    marginBottom: 6
+  },
+  card: {
+    flex: 1,
+    minWidth: "45%", // 🔹 Säkerställer att korten inte blir för smala
+    margin: 6,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
+    alignItems: "center"
+  },
+  statTitle: {
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 5, // 🆕 Ger avstånd mellan titel och antal
-    textTransform: "capitalize" // 🆕 Gör första bokstaven stor
+    marginBottom: 5
   },
-  stat: {
-    fontSize: 16,
-    textAlign: "center"
+  statValue: {
+    fontSize: 18,
+    color: "#444",
+    fontWeight: "bold"
+  },
+  errorText: {
+    fontSize: 18,
+    color: "red",
+    textAlign: "center",
+    fontWeight: "bold"
   }
 });
 

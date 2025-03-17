@@ -1,55 +1,91 @@
-import { useEffect, useState, useContext } from "react";
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import { useEffect, useState, useContext, useMemo } from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  ScrollView
+} from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatisticStyle, GlobalStyle } from "../styles/styles";
-import Button from "../components/Button";
+
+// 🔹 Komponent för statistik-kort
+const StatCard = ({ title, value, theme }) => (
+  <View
+    style={[StatisticStyle.card, { backgroundColor: theme.cardBackground }]}>
+    <Text style={[StatisticStyle.statTitle, { color: theme.text }]}>
+      {title}
+    </Text>
+    <Text style={[StatisticStyle.statValue, { color: theme.text }]}>
+      {value}
+    </Text>
+  </View>
+);
 
 export default function StatisticsScreen() {
   const { theme } = useContext(SettingsContext);
-  const [data, setData] = useState(null);
-  const [clearedClothes, setClearedClothes] = useState([]);
+  const [data, setData] = useState([]); // ✅ Alltid en array från start
+  const [clearedClothes, setClearedClothes] = useState([]); // ✅ Alltid en array
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchData = async () => {
       try {
         setError(null);
-        const response = await fetch("https://mitt-api.findersson.se/items");
-        if (!response.ok) throw new Error("Kunde inte hämta data");
-        const json = await response.json();
-        setData(json);
+        setLoading(true);
+
+        const [itemsResponse, clearedClothesData] = await Promise.all([
+          fetch("https://mitt-api.findersson.se/items").then((res) =>
+            res.ok ? res.json() : Promise.reject("Kunde inte hämta data")
+          ),
+          AsyncStorage.getItem("clearedClothes").then((res) =>
+            res ? JSON.parse(res) : []
+          )
+        ]);
+
+        setData(itemsResponse || []);
+        setClearedClothes(clearedClothesData || []);
       } catch (error) {
         console.error(error);
-        setError(error.message);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const fetchClearedClothes = async () => {
-      try {
-        const storedCleared = await AsyncStorage.getItem("clearedClothes");
-        if (storedCleared) {
-          setClearedClothes(JSON.parse(storedCleared));
-        }
-      } catch (error) {
-        console.error("Kunde inte hämta rensade kläder:", error);
-      }
-    };
-
-    Promise.all([fetchItems(), fetchClearedClothes()]).finally(() =>
-      setLoading(false)
-    );
+    fetchData();
   }, []);
 
-  if (isLoading)
+  // ✅ `useMemo` körs alltid på varje render och returnerar en stabil struktur
+  const stats = useMemo(() => {
+    return {
+      totalItems: data.length,
+      totalCleared: clearedClothes.length,
+      categoryCount: data.reduce((acc, item) => {
+        const category = item.category?.main || "Okänd";
+        acc[category] = (acc[category] || 0) + 1;
+        return acc;
+      }, {})
+    };
+  }, [data, clearedClothes]);
+
+  // 🔹 Laddningsindikator vid hämtning av data
+  if (isLoading) {
     return (
       <View
-        style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
+        style={[
+          GlobalStyle.container,
+          { backgroundColor: theme.background, justifyContent: "center" }
+        ]}>
         <ActivityIndicator size="large" color={theme.text} />
       </View>
     );
-  if (error)
+  }
+
+  // 🔹 Om fel uppstår, visa meddelande
+  if (error) {
     return (
       <View
         style={[
@@ -61,103 +97,50 @@ export default function StatisticsScreen() {
         </Text>
       </View>
     );
-  if (!data || data.length === 0)
-    return (
+  }
+
+  return (
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View
         style={[
           StatisticStyle.container,
           { backgroundColor: theme.background }
         ]}>
-        <Text style={[StatisticStyle.infoText, { color: theme.text }]}>
-          Inga kläder hittades
+        <Text style={[GlobalStyle.title, { color: theme.text }]}>
+          Statistik
         </Text>
-      </View>
-    );
 
-  const totalItems = data.length;
-  const totalCleared = clearedClothes.length;
-  const latestItem =
-    data.sort((a, b) => new Date(b.lastUsed) - new Date(a.lastUsed))[0]?.name ||
-    "Inget ännu";
+        <View style={StatisticStyle.statsWrapper}>
+          <StatCard
+            title="Totalt antal plagg"
+            value={stats.totalItems}
+            theme={theme}
+          />
+          <StatCard
+            title="Rensade plagg"
+            value={stats.totalCleared}
+            theme={theme}
+          />
+        </View>
 
-  const categoryCount = data.reduce((acc, item) => {
-    const category = item.category?.main || "Okänd";
-    acc[category] = (acc[category] || 0) + 1;
-    return acc;
-  }, {});
-
-  const mostCommonCategory =
-    Object.entries(categoryCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
-    "Ingen kategori";
-
-  return (
-    <View
-      style={[StatisticStyle.container, { backgroundColor: theme.background }]}>
-      <Text style={[GlobalStyle.title, { color: theme.text }]}>Statistik</Text>
-
-      <View
-        style={[
-          StatisticStyle.card,
-          { backgroundColor: theme.cardBackground }
-        ]}>
-        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-          Totalt antal plagg: {totalItems}
+        <Text style={[GlobalStyle.subTitle, { color: theme.text }]}>
+          Kläder per kategori:
         </Text>
-      </View>
 
-      <View
-        style={[
-          StatisticStyle.card,
-          { backgroundColor: theme.cardBackground }
-        ]}>
-        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-          Rensade plagg: {totalCleared}
-        </Text>
+        <FlatList
+          data={Object.entries(stats.categoryCount)}
+          keyExtractor={(item) => item[0]}
+          numColumns={2} // 🔹 Grid-layout med två kolumner
+          columnWrapperStyle={StatisticStyle.row} // 🔹 Anpassa radlayout
+          renderItem={({ item }) => (
+            <StatCard
+              title={item[0]}
+              value={`${item[1]} plagg`}
+              theme={theme}
+            />
+          )}
+        />
       </View>
-
-      <View
-        style={[
-          StatisticStyle.card,
-          { backgroundColor: theme.cardBackground }
-        ]}>
-        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-          Vanligaste kategori: {mostCommonCategory}
-        </Text>
-      </View>
-
-      <View
-        style={[
-          StatisticStyle.card,
-          { backgroundColor: theme.cardBackground }
-        ]}>
-        <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-          Senast använda plagg: {latestItem}
-        </Text>
-      </View>
-
-      <Text style={[GlobalStyle.subTitle, { color: theme.text }]}>
-        Kläder per kategori:
-      </Text>
-      <FlatList
-        data={Object.entries(categoryCount)}
-        keyExtractor={(item) => item[0]}
-        numColumns={2} // 🆕 Grid-layout med två kolumner
-        columnWrapperStyle={StatisticStyle.row} // 🆕 Anpassa radlayout
-        renderItem={({ item }) => (
-          <View
-            style={[
-              StatisticStyle.card,
-              { backgroundColor: theme.cardBackground }
-            ]}>
-            <Text style={[StatisticStyle.cardTitle, { color: theme.text }]}>
-              {item[0]}
-            </Text>
-            <Text style={[StatisticStyle.stat, { color: theme.text }]}>
-              {item[1]} plagg
-            </Text>
-          </View>
-        )}
-      />
-    </View>
+    </ScrollView>
   );
 }

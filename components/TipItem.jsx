@@ -8,7 +8,7 @@ import {
   Platform
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TipsStyle } from "../styles/styles";
+import { TipsStyle } from "../styles/TipsStyle";
 
 // ⚡️ Aktivera LayoutAnimation på Android
 if (
