@@ -17,7 +17,6 @@ import DetailsScreen from "./pages/Details";
 import TipsScreen from "./pages/Tips";
 import ProfileScreen from "./pages/Profile";
 import StatisticsScreen from "./pages/Statistic";
-import ItemsScreen from "./pages/Items";
 import { SettingsProvider, SettingsContext } from "./context/SettingsContext";
 
 SplashScreen.preventAutoHideAsync();
@@ -84,7 +83,7 @@ function BottomTabs() {
   );
 }
 
-// 🔹 Stack.Navigator med tema
+//  Stack.Navigator med tema
 function MainStack() {
   return (
     <Stack.Navigator>
@@ -108,17 +107,10 @@ function MainStack() {
         component={StatisticsScreen}
         options={{ title: "Statistik" }}
       />
-
-      <Stack.Screen
-        name="Items"
-        component={ItemsScreen}
-        options={{ title: "Min Lista" }}
-      />
     </Stack.Navigator>
   );
 }
 
-// 🔹 Huvudkomponent med globalt tema
 function AppContent() {
   const { theme, darkMode } = useContext(SettingsContext); // ✅ Hämta tema
 

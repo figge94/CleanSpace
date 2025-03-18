@@ -5,7 +5,7 @@ import { SettingsContext } from "../context/SettingsContext";
 import { GlobalStyle } from "../styles/styles";
 import TipItem from "../components/TipItem";
 import { TipsStyle } from "../styles/TipsStyle";
-import allTips from "../data/TipsData"; // 📌 Importera tipsen
+import allTips from "../data/TipsData";
 
 export default function TipsScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState("Alla");

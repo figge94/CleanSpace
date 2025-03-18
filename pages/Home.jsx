@@ -76,18 +76,6 @@ export default function HomeScreen({ navigation }) {
               }
               theme={theme}
             />
-            <Button
-              title="Gå till Mina Objekt"
-              onPress={() => navigation.navigate("Items")}
-              icon={
-                <MaterialCommunityIcons
-                  name="folder"
-                  size={26}
-                  color={theme.buttonText}
-                />
-              }
-              theme={theme}
-            />
           </View>
         </View>
       </ScrollView>
