@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { CardStyle } from "../styles/CardStyle";
 
 export default function Card({ item, theme, onPress }) {
@@ -14,6 +14,31 @@ export default function Card({ item, theme, onPress }) {
           <Text style={[CardStyle.title, { color: theme.text }]}>
             {item.name}
           </Text>
+
+          <View style={{ flexDirection: "row", marginVertical: 4 }}>
+            {item.colors && item.colors.length > 0 ? (
+              item.colors.map((color, index) => (
+                <View
+                  key={index}
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 8,
+                    backgroundColor: color,
+                    marginRight: 4,
+                    borderWidth: 1,
+                    borderColor:
+                      theme.text === "#000000" ? "#ffffff" : "#cccccc"
+                  }}
+                />
+              ))
+            ) : (
+              <Text style={[CardStyle.text, { color: theme.text }]}>
+                Ingen färg
+              </Text>
+            )}
+          </View>
+
           <Text style={[CardStyle.text, { color: theme.text }]}>
             ✨ Skick: {item.condition}
           </Text>
@@ -25,9 +50,9 @@ export default function Card({ item, theme, onPress }) {
           </Text>
         </View>
 
-        <MaterialIcons
+        <EvilIcons
           name="chevron-right"
-          size={24}
+          size={40}
           color={theme.text}
           style={CardStyle.arrowIcon}
         />

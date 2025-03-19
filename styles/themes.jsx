@@ -7,17 +7,19 @@ export const lightTheme = {
   borderColor: "#d9c7bf",
   headerText: "#fff",
   activeButtonBackground: "#A47864",
-  notActiveButtonBackground: "#d9c7bf"
+  notActiveButtonBackground: "#d9c7bf",
+  tagBackground: "#AC9C95"
 };
 
 export const darkTheme = {
   background: "#121212",
   text: "#EAEAEA",
-  cardBackground: "#1E1E1E",
+  cardBackground: "#242424",
   buttonBackground: "#444",
   buttonText: "#FFF",
   borderColor: "#666",
   headerText: "#FFF",
   activeButtonBackground: "#A86D5D",
-  notActiveButtonBackground: "#3A2C28"
+  notActiveButtonBackground: "#3A2C28",
+  tagBackground: "#242424"
 };

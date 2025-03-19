@@ -3,7 +3,7 @@ import { Text, View, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext";
 import profilePic from "../assets/user.png";
-import { ProfileStyle } from "../styles/styles";
+import { ProfileStyle } from "../styles/ProfilePageStyle";
 import { ImageStyle } from "../styles/ImageStyle";
 import Button from "../components/Button"; // 🆕 Importera knappen
 import { Animated } from "react-native";
@@ -31,7 +31,6 @@ export default function ProfileScreen({ navigation }) {
         user@example.com
       </Text>
 
-      {/* 🆕 Använd vår Button-komponent istället för inline-komponent */}
       <Button
         icon={
           <MaterialIcons name="bar-chart" size={22} color={theme.buttonText} />
@@ -43,7 +42,7 @@ export default function ProfileScreen({ navigation }) {
 
       <View style={ProfileStyle.settingsContainer}>
         <Text style={[ProfileStyle.settingsHeader, { color: theme.text }]}>
-          Inställningar
+          Inställningar:
         </Text>
 
         <Button

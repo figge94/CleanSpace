@@ -1,10 +1,11 @@
-import { Text, View, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import { useContext, useEffect } from "react";
 import { SettingsContext } from "../context/SettingsContext";
 import { DetailStyle, GlobalStyle } from "../styles/styles";
 import { BackHandler } from "react-native";
+import ButtonStyle from "../styles/ButtonStyle";
+import { TagStyle } from "../styles/TagStyle";
 
 export default function DetailsScreen({ route, navigation }) {
   const { theme } = useContext(SettingsContext);
@@ -33,36 +34,72 @@ export default function DetailsScreen({ route, navigation }) {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={[
-            DetailStyle.backButton,
+            ButtonStyle.backButton,
             { backgroundColor: theme.buttonBackground }
           ]}>
           <MaterialIcons name="arrow-back" size={20} color="white" />
-          <Text style={DetailStyle.buttonText}>Gå tillbaka</Text>
+          <Text style={ButtonStyle.buttonText}>Gå tillbaka</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <View
-      style={[DetailStyle.container, { backgroundColor: theme.background }]}>
-      <View
-        style={[
-          DetailStyle.detailsCard,
-          { backgroundColor: theme.cardBackground }
-        ]}>
-        <Text style={[DetailStyle.title, { color: theme.text }]}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <View style={{ paddingVertical: 15, alignItems: "center" }}>
+        <Text style={[DetailStyle.headerTitle, { color: theme.text }]}>
           {item.name}
         </Text>
+      </View>
 
-        <InfoRow
-          text={`${item.category?.main} / ${item.category?.sub}`}
-          theme={theme}
-        />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 20 }}>
+        {item.tags && item.tags.length > 0 && (
+          <View>
+            <View style={TagStyle.tagContainer}>
+              {item.tags.map((tag, index) => (
+                <View
+                  key={index}
+                  style={[
+                    TagStyle.tag,
+                    { backgroundColor: theme.tagBackground }
+                  ]}>
+                  <Text style={[TagStyle.tagText, { color: theme.buttonText }]}>
+                    {tag}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
 
-        <View style={DetailStyle.detailContainer}>
-          <Text style={[DetailStyle.infoText, { color: theme.text }]}>
-            Färg:
+        <View
+          style={[
+            DetailStyle.detailsCard,
+            { backgroundColor: theme.cardBackground }
+          ]}>
+          <InfoRow
+            text={`Kategori: ${item.category?.main} / ${item.category?.sub}`}
+            theme={theme}
+          />
+          <InfoRow text={`Skick: ${item.condition}`} theme={theme} />
+          <InfoRow
+            text={`Senast använd: ${
+              item.lastUsed
+                ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
+                : "Okänt"
+            }`}
+            theme={theme}
+          />
+        </View>
+
+        <View
+          style={[
+            DetailStyle.detailsCard,
+            { backgroundColor: theme.cardBackground }
+          ]}>
+          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+            Färger:
           </Text>
           <View style={DetailStyle.colorContainer}>
             {item.colors && item.colors.length > 0 ? (
@@ -87,77 +124,62 @@ export default function DetailsScreen({ route, navigation }) {
           </View>
         </View>
 
-        <InfoRow text={`Skick: ${item.condition}`} theme={theme} />
-
-        <InfoRow
-          icon="history"
-          text={`Senast använd: ${
-            item.lastUsed
-              ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
-              : "Okänt"
-          }`}
-          theme={theme}
-        />
-
-        <View style={DetailStyle.detailContainer}>
-          <View style={DetailStyle.tagContainer}>
-            {item.tags && item.tags.length > 0 ? (
-              item.tags.map((tag, index) => (
-                <View
-                  key={index}
-                  style={[
-                    DetailStyle.detailTag,
-                    { backgroundColor: theme.buttonBackground }
-                  ]}>
-                  <Text
-                    style={[DetailStyle.tagText, { color: theme.buttonText }]}>
-                    {tag}
-                  </Text>
-                </View>
-              ))
-            ) : (
-              <Text style={[DetailStyle.infoText, { color: theme.text }]}>
-                Inga taggar
-              </Text>
-            )}
-          </View>
-        </View>
-
         {item.notes && (
-          <View style={DetailStyle.noteContainer}>
-            <EvilIcons name="comment" size={24} color="black" />
-            <Text style={[DetailStyle.notes, { color: theme.text }]}>
-              {item.notes}
+          <View
+            style={[
+              DetailStyle.noteContainer,
+              {
+                backgroundColor: theme.cardBackground
+              }
+            ]}>
+            <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+              Anteckningar
             </Text>
+            <View
+              style={[
+                DetailStyle.noteContainer,
+                {
+                  backgroundColor:
+                    theme.background === "#121212" ? "#1A1A1A" : "#f5f5f5",
+                  borderColor: theme.borderColor,
+                  borderWidth: 1
+                }
+              ]}>
+              <EvilIcons name="comment" size={24} color={theme.text} />
+              <Text style={[DetailStyle.notes, { color: theme.text }]}>
+                {item.notes}
+              </Text>
+            </View>
           </View>
         )}
 
-        <InfoRow
-          text={`Tillagd: ${
-            item.createdAt
-              ? new Date(item.createdAt).toLocaleDateString("sv-SE")
-              : "Okänt"
-          }`}
-          theme={theme}
-        />
-      </View>
+        <View style={{ alignItems: "center" }}>
+          <InfoRow
+            text={`Tillagd: ${
+              item.createdAt
+                ? new Date(item.createdAt).toLocaleDateString("sv-SE")
+                : "Okänt"
+            }`}
+            theme={theme}
+          />
+        </View>
 
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={[
-          DetailStyle.backButton,
-          { backgroundColor: theme.buttonBackground }
-        ]}>
-        <MaterialIcons name="arrow-back" size={24} color="white" />
-        <Text style={DetailStyle.buttonText}>Gå tillbaka</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={[
+            ButtonStyle.backButton,
+            { backgroundColor: theme.buttonBackground }
+          ]}>
+          <MaterialIcons name="arrow-back" size={24} color="white" />
+          <Text style={ButtonStyle.backButton}>Gå tillbaka</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }
 
-const InfoRow = ({ icon, text, theme }) => (
+const InfoRow = ({ text, theme }) => (
   <View style={DetailStyle.detailContainer}>
-    <MaterialIcons name={icon} size={20} color={theme.text} />
-    <Text style={[DetailStyle.infoText, { color: theme.text }]}>{text}</Text>
+    <Text style={[GlobalStyle.infoText, { color: theme.text }]}>{text}</Text>
   </View>
 );

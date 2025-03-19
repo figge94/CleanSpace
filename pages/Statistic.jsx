@@ -1,23 +1,34 @@
 import { useEffect, useState, useContext, useMemo } from "react";
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  FlatList,
-  ScrollView
-} from "react-native";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatisticStyle, GlobalStyle } from "../styles/styles";
+import { CardStyle } from "../styles/CardStyle";
 
-// 🔹 Komponent för statistik-kort
+// 🔹 Komponent för statistik-kort med förbättrad design
 const StatCard = ({ title, value, theme }) => (
   <View
-    style={[StatisticStyle.card, { backgroundColor: theme.cardBackground }]}>
-    <Text style={[StatisticStyle.statTitle, { color: theme.text }]}>
+    style={[
+      StatisticStyle.card,
+      {
+        backgroundColor: theme.cardBackground,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3 // 🔹 Lägg till skugga för en snyggare effekt
+      }
+    ]}>
+    <Text
+      style={[
+        StatisticStyle.statTitle,
+        { color: theme.text, fontWeight: "bold", fontSize: 16 }
+      ]}>
       {title}
     </Text>
-    <Text style={[StatisticStyle.statValue, { color: theme.text }]}>
+    <Text
+      style={[
+        StatisticStyle.statValue,
+        { color: theme.text, fontSize: 18, fontWeight: "bold" }
+      ]}>
       {value}
     </Text>
   </View>
@@ -25,8 +36,8 @@ const StatCard = ({ title, value, theme }) => (
 
 export default function StatisticsScreen() {
   const { theme } = useContext(SettingsContext);
-  const [data, setData] = useState([]); // ✅ Alltid en array från start
-  const [clearedClothes, setClearedClothes] = useState([]); // ✅ Alltid en array
+  const [data, setData] = useState([]);
+  const [clearedClothes, setClearedClothes] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,20 +47,16 @@ export default function StatisticsScreen() {
         setError(null);
         setLoading(true);
 
-        const [itemsResponse, clearedClothesData] = await Promise.all([
-          fetch("https://mitt-api.findersson.se/items").then((res) =>
-            res.ok ? res.json() : Promise.reject("Kunde inte hämta data")
-          ),
-          AsyncStorage.getItem("clearedClothes").then((res) =>
-            res ? JSON.parse(res) : []
-          )
-        ]);
+        const itemsResponse = await fetch(
+          "https://mitt-api.findersson.se/items"
+        );
+        if (!itemsResponse.ok) throw new Error("Kunde inte hämta data");
 
-        setData(itemsResponse || []);
-        setClearedClothes(clearedClothesData || []);
+        const itemsData = await itemsResponse.json();
+        setData(itemsData || []);
       } catch (error) {
         console.error(error);
-        setError(error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -58,89 +65,59 @@ export default function StatisticsScreen() {
     fetchData();
   }, []);
 
-  // ✅ `useMemo` körs alltid på varje render och returnerar en stabil struktur
   const stats = useMemo(() => {
     return {
       totalItems: data.length,
-      totalCleared: clearedClothes.length,
       categoryCount: data.reduce((acc, item) => {
         const category = item.category?.main || "Okänd";
         acc[category] = (acc[category] || 0) + 1;
         return acc;
       }, {})
     };
-  }, [data, clearedClothes]);
+  }, [data]);
 
-  // 🔹 Laddningsindikator vid hämtning av data
-  if (isLoading) {
-    return (
-      <View
-        style={[
-          GlobalStyle.container,
-          { backgroundColor: theme.background, justifyContent: "center" }
-        ]}>
+  return (
+    <View
+      style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
+      <Text style={[GlobalStyle.title, { color: theme.text }]}>Statistik</Text>
+
+      {isLoading ? (
         <ActivityIndicator size="large" color={theme.text} />
-      </View>
-    );
-  }
-
-  // 🔹 Om fel uppstår, visa meddelande
-  if (error) {
-    return (
-      <View
-        style={[
-          StatisticStyle.container,
-          { backgroundColor: theme.background }
-        ]}>
+      ) : error ? (
         <Text style={[StatisticStyle.errorText, { color: theme.text }]}>
           {error}
         </Text>
-      </View>
-    );
-  }
-
-  return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View
-        style={[
-          StatisticStyle.container,
-          { backgroundColor: theme.background }
-        ]}>
-        <Text style={[GlobalStyle.title, { color: theme.text }]}>
-          Statistik
-        </Text>
-
-        <View style={StatisticStyle.statsWrapper}>
-          <StatCard
-            title="Totalt antal plagg"
-            value={stats.totalItems}
-            theme={theme}
-          />
-          <StatCard
-            title="Rensade plagg"
-            value={stats.totalCleared}
-            theme={theme}
-          />
-        </View>
-
-        <Text style={[GlobalStyle.subTitle, { color: theme.text }]}>
-          Kläder per kategori:
-        </Text>
-
-        <FlatList
-          data={Object.entries(stats.categoryCount)}
-          keyExtractor={(item) => item[0]}
-          numColumns={2} // 🔹 Grid-layout med två kolumner
-          columnWrapperStyle={StatisticStyle.row} // 🔹 Anpassa radlayout
-          renderItem={({ item }) => (
+      ) : (
+        <>
+          {/* 🔹 Sektion: Övergripande statistik */}
+          <View style={[CardStyle.statsWrapper, { paddingVertical: 10 }]}>
             <StatCard
-              title={item[0]}
-              value={`${item[1]} plagg`}
+              title="Totalt antal plagg"
+              value={stats.totalItems}
               theme={theme}
             />
-          )}
-        />
-      </View>
-    </ScrollView>
+          </View>
+
+          {/* 🔹 Sektion: Kläder per kategori */}
+          <Text
+            style={[
+              GlobalStyle.subTitle,
+              { color: theme.text, marginTop: 10 }
+            ]}>
+            Antal kläder per kategori:
+          </Text>
+
+          <FlatList
+            data={Object.entries(stats.categoryCount)}
+            keyExtractor={(item) => item[0]}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: "space-between", padding: 2 }}
+            renderItem={({ item }) => (
+              <StatCard title={item[0]} value={`${item[1]} st`} theme={theme} />
+            )}
+          />
+        </>
+      )}
+    </View>
   );
 }

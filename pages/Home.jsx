@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SettingsContext } from "../context/SettingsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { GlobalStyle, HeaderStyle } from "../styles/styles";
+import { GlobalStyle } from "../styles/styles";
 import wardrobeImg from "../assets/wardrobe.png";
 import Button from "../components/Button";
 import { ImageStyle } from "../styles/ImageStyle";
@@ -37,19 +37,21 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={[{ flex: 1, backgroundColor: theme.background }]}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {/* Header */}
         <View style={ImageStyle.headerContainer}>
           <Image source={wardrobeImg} style={ImageStyle.wardrobeImage} />
         </View>
 
-        {/* Huvudinnehåll */}
         <View style={GlobalStyle.contentContainer}>
           <Text style={[GlobalStyle.description, { color: theme.text }]}>
-            Organisera din garderob och skapa ordning i ditt hem på ett smart
-            sätt!
+            <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+              Rensa enkelt, organisera smart
+            </Text>
+            {"\n"} {/* Radbrytning */}
+            <Text style={{ fontSize: 18, opacity: 0.8 }}>
+              Få full koll på din garderob snabbt och smidigt.
+            </Text>
           </Text>
 
-          {/* 🔹 Fixad knappcontainer */}
           <View style={GlobalStyle.buttonContainer}>
             <Button
               title="Min garderob"

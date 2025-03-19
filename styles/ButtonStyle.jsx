@@ -19,21 +19,22 @@ const ButtonStyle = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 8,
-    textTransform: "uppercase"
+    marginLeft: 10,
+    textTransform: "uppercase",
+    textAlign: "center",
+    color: "white"
   },
   backButton: {
+    fontSize: 18,
     flexDirection: "row",
     alignItems: "center",
-    padding: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
     borderRadius: 8,
-    marginTop: 20
-  },
-  buttonTextWhite: {
+    textAlign: "center",
     color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginLeft: 5
+    justifyContent: "center",
+    textTransform: "uppercase"
   }
 });
 
