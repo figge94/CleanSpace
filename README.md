@@ -5,8 +5,8 @@
 Följ dessa steg för att installera och köra projektet lokalt:
 
 1. **Kloning av repo**  
-   git clone https://github.com/ditt-användarnamn/ditt-repo.git
-   cd ditt-repo
+   git clone https://github.com/figge94/CleanSpace.git
+   cd CleanSpace
 
 2. **Installera beroenden**
    npm install
