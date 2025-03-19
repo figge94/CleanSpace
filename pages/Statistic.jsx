@@ -1,8 +1,9 @@
 import { useEffect, useState, useContext, useMemo } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
-import { StatisticStyle, GlobalStyle } from "../styles/styles";
+import { StatisticStyle } from "../styles/pages/StatisticStyle";
 import { CardStyle } from "../styles/CardStyle";
+import { GlobalStyle } from "../styles/global/GlobalStyle";
 
 // 🔹 Komponent för statistik-kort med förbättrad design
 const StatCard = ({ title, value, theme }) => (

@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SettingsContext } from "../context/SettingsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { GlobalStyle } from "../styles/styles";
+import { GlobalStyle } from "../styles/global/GlobalStyle";
 import wardrobeImg from "../assets/wardrobe.png";
 import Button from "../components/Button";
 import { ImageStyle } from "../styles/ImageStyle";

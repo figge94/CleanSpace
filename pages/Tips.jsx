@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { Text, View, FlatList, TouchableOpacity, Animated } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
-import { GlobalStyle } from "../styles/styles";
+import { GlobalStyle } from "../styles/global/GlobalStyle";
 import TipItem from "../components/TipItem";
 import { TipsStyle } from "../styles/TipsStyle";
 import allTips from "../data/TipsData";

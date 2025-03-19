@@ -2,10 +2,11 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import { useContext, useEffect } from "react";
 import { SettingsContext } from "../context/SettingsContext";
-import { DetailStyle, GlobalStyle } from "../styles/styles";
+import { GlobalStyle } from "../styles/global/GlobalStyle";
 import { BackHandler } from "react-native";
 import ButtonStyle from "../styles/ButtonStyle";
 import { TagStyle } from "../styles/TagStyle";
+import { DetailStyle } from "../styles/pages/DetailStyle";
 
 export default function DetailsScreen({ route, navigation }) {
   const { theme } = useContext(SettingsContext);

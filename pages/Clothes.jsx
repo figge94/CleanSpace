@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
-import { GlobalStyle } from "../styles/styles";
+import { GlobalStyle } from "../styles/global/GlobalStyle";
 import Card from "../components/Card";
 
 export default function ClothesScreen({ navigation }) {
