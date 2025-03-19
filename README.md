@@ -1,6 +1,6 @@
 # CleanSpace
 
-## 📦 Installation
+## Installation
 
 Följ dessa steg för att installera och köra projektet lokalt:
 
