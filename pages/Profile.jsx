@@ -3,7 +3,7 @@ import { Text, View, Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsContext } from "../context/SettingsContext";
 import profilePic from "../assets/user.png";
-import { ProfileStyle } from "../styles/ProfilePageStyle";
+import { ProfileStyle } from "../styles/pages/ProfilePageStyle";
 import { ImageStyle } from "../styles/ImageStyle";
 import Button from "../components/Button"; // 🆕 Importera knappen
 import { Animated } from "react-native";
