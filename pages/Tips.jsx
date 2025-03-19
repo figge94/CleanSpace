@@ -3,7 +3,7 @@ import { Text, View, FlatList, TouchableOpacity, Animated } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import { GlobalStyle } from "../styles/global/GlobalStyle";
 import TipItem from "../components/TipItem";
-import { TipsStyle } from "../styles/TipsStyle";
+import { TipsStyle } from "../styles/pages/TipsStyle";
 import allTips from "../data/TipsData";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -12,6 +12,7 @@ export default function TipsScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showTips, setShowTips] = useState(false);
   const [randomTip, setRandomTip] = useState(null);
+  const [expandedTipId, setExpandedTipId] = useState(null); // 🔹 Ny state för öppen accordion
   const fadeAnim = useState(new Animated.Value(0))[0];
 
   const categories = ["Förvaring", "Organisering", "Tvätt", "Mer utrymme"];
@@ -19,7 +20,6 @@ export default function TipsScreen({ navigation }) {
   const getRandomTip = () => {
     const newTip = allTips[Math.floor(Math.random() * allTips.length)];
     setRandomTip(newTip);
-
     fadeAnim.setValue(0);
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -48,19 +48,15 @@ export default function TipsScreen({ navigation }) {
               TipsStyle.featuredTip,
               { backgroundColor: theme.cardBackground, opacity: fadeAnim }
             ]}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Details", { item: randomTip })
-              }>
+            <View>
               <Text style={[TipsStyle.featuredTipTitle, { color: theme.text }]}>
                 {randomTip.title}
               </Text>
               <Text style={[TipsStyle.featuredTipText, { color: theme.text }]}>
                 {randomTip.text}
               </Text>
-            </TouchableOpacity>
+            </View>
 
-            {/* 🔄 Knapp för att hämta ett nytt slumpmässigt tips */}
             <TouchableOpacity
               onPress={getRandomTip}
               style={[
@@ -91,11 +87,7 @@ export default function TipsScreen({ navigation }) {
         ]}
         onPress={() => {
           setShowTips(!showTips);
-          if (!showTips) {
-            setSelectedCategory("Förvaring");
-          } else {
-            setSelectedCategory(null);
-          }
+          setSelectedCategory(showTips ? null : "Förvaring");
         }}>
         <Text style={[TipsStyle.toggleButtonText, { color: theme.buttonText }]}>
           {showTips ? "Dölj fler tips" : "Visa fler tips"}
@@ -136,10 +128,17 @@ export default function TipsScreen({ navigation }) {
       {showTips && selectedCategory && (
         <FlatList
           data={filteredTips}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <TipItem item={item} theme={theme} />}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TipItem
+              item={item}
+              theme={theme}
+              expandedTipId={expandedTipId}
+              setExpandedTipId={setExpandedTipId}
+            />
+          )}
           contentContainerStyle={TipsStyle.content}
-          ListFooterComponent={<View style={{ height: 30 }} />}
+          ListFooterComponent={<View style={{ height: 20 }} />}
         />
       )}
     </View>

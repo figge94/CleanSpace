@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Platform
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TipsStyle } from "../styles/TipsStyle";
+import { TipsStyle } from "../styles/pages/TipsStyle";
 
 // ⚡️ Aktivera LayoutAnimation på Android
 if (
@@ -18,12 +18,17 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export default function TipItem({ item, theme }) {
-  const [expanded, setExpanded] = useState(false);
+export default function TipItem({
+  item,
+  theme,
+  expandedTipId,
+  setExpandedTipId
+}) {
+  const isExpanded = expandedTipId === item.id;
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setExpanded(!expanded);
+    setExpandedTipId(isExpanded ? null : item.id);
   };
 
   return (
@@ -32,7 +37,7 @@ export default function TipItem({ item, theme }) {
       onPress={toggleExpand}
       style={[
         TipsStyle.tipCard,
-        expanded && TipsStyle.tipCardExpanded,
+        isExpanded && TipsStyle.tipCardExpanded,
         {
           backgroundColor: theme.cardBackground,
           borderColor: theme.borderColor
@@ -43,12 +48,12 @@ export default function TipItem({ item, theme }) {
           {item.title}
         </Text>
         <MaterialIcons
-          name={expanded ? "expand-less" : "expand-more"}
+          name={isExpanded ? "expand-less" : "expand-more"}
           size={24}
           color={theme.text}
         />
       </View>
-      {expanded && (
+      {isExpanded && (
         <Text style={[TipsStyle.tipText, { color: theme.text }]}>
           {item.text}
         </Text>

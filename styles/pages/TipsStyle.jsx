@@ -1,9 +1,8 @@
 import { StyleSheet } from "react-native";
 
 export const TipsStyle = StyleSheet.create({
-  /** 🔹 Kategoriknappar i horisontell rad */
   categoryScroll: {
-    paddingVertical: 8,
+    paddingVertical: 1,
     paddingHorizontal: 1,
     flexDirection: "row",
     alignItems: "flex-start"
@@ -14,33 +13,29 @@ export const TipsStyle = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 2,
     backgroundColor: "#ddd",
-    elevation: 3
+    elevation: 1
   },
   categoryButtonText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "bold"
   },
-
-  /** 🔹 Knapp för att växla mellan att visa/dölja fler tips */
   toggleButton: {
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginVertical: 10,
     alignSelf: "stretch",
     alignItems: "center",
     backgroundColor: "#007AFF",
-    elevation: 3
+    elevation: 2
   },
   toggleButtonText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#fff"
   },
-
-  /** 🔹 Slumpmässigt tips */
   featuredTipContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     padding: 15,
     borderRadius: 12
   },
@@ -65,8 +60,6 @@ export const TipsStyle = StyleSheet.create({
     textAlign: "center",
     opacity: 0.9
   },
-
-  /** 🔹 Knapp för att få ett nytt slumpmässigt tips */
   shuffleButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -83,11 +76,9 @@ export const TipsStyle = StyleSheet.create({
     marginLeft: 8,
     color: "#fff"
   },
-
-  /** 🔹 Tips-kort */
   tipCard: {
-    padding: 16,
-    marginVertical: 8,
+    padding: 14,
+    marginVertical: 5,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -113,8 +104,6 @@ export const TipsStyle = StyleSheet.create({
     marginTop: 8,
     opacity: 0.9
   },
-
-  /** 🔹 Innehållscontainer */
   content: {
     paddingBottom: 20
   }

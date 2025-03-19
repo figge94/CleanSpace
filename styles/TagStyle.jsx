@@ -5,7 +5,7 @@ export const TagStyle = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 15,
     borderRadius: 30,
-    marginRight: 6
+    marginRight: 3
   },
   tagText: {
     fontSize: 14,
@@ -16,6 +16,6 @@ export const TagStyle = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginBottom: 15
+    marginBottom: 5
   }
 });

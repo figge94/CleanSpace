@@ -40,10 +40,10 @@ export default function Card({ item, theme, onPress }) {
           </View>
 
           <Text style={[CardStyle.text, { color: theme.text }]}>
-            ✨ Skick: {item.condition}
+            Skick: {item.condition}
           </Text>
           <Text style={[CardStyle.text, { color: theme.text }]}>
-            📅 Senast använd:{" "}
+            Senast använd:{" "}
             {item.lastUsed
               ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
               : "Okänt"}

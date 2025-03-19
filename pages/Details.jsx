@@ -25,52 +25,28 @@ export default function DetailsScreen({ route, navigation }) {
     return () => backHandler.remove();
   }, []);
 
-  if (!item) {
-    return (
-      <View
-        style={[GlobalStyle.container, { backgroundColor: theme.background }]}>
-        <Text style={[GlobalStyle.errorText, { color: theme.text }]}>
-          Ingen information tillgänglig
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={[
-            ButtonStyle.backButton,
-            { backgroundColor: theme.buttonBackground }
-          ]}>
-          <MaterialIcons name="arrow-back" size={20} color="white" />
-          <Text style={ButtonStyle.buttonText}>Gå tillbaka</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }}>
-      <View style={{ paddingVertical: 15, alignItems: "center" }}>
-        <Text style={[DetailStyle.headerTitle, { color: theme.text }]}>
-          {item.name}
-        </Text>
-      </View>
-
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 20 }}>
+      <ScrollView contentContainerStyle={DetailStyle.scrollContainer}>
+        <View style={{ paddingVertical: 15, alignItems: "center" }}>
+          <Text style={[DetailStyle.headerTitle, { color: theme.text }]}>
+            {item.name}
+          </Text>
+        </View>
         {item.tags && item.tags.length > 0 && (
-          <View>
-            <View style={TagStyle.tagContainer}>
-              {item.tags.map((tag, index) => (
-                <View
-                  key={index}
-                  style={[
-                    TagStyle.tag,
-                    { backgroundColor: theme.tagBackground }
-                  ]}>
-                  <Text style={[TagStyle.tagText, { color: theme.buttonText }]}>
-                    {tag}
-                  </Text>
-                </View>
-              ))}
-            </View>
+          <View style={TagStyle.tagContainer}>
+            {item.tags.map((tag, index) => (
+              <View
+                key={index}
+                style={[
+                  TagStyle.tag,
+                  { backgroundColor: theme.tagBackground }
+                ]}>
+                <Text style={[TagStyle.tagText, { color: theme.buttonText }]}>
+                  {tag}
+                </Text>
+              </View>
+            ))}
           </View>
         )}
 
@@ -79,19 +55,26 @@ export default function DetailsScreen({ route, navigation }) {
             DetailStyle.detailsCard,
             { backgroundColor: theme.cardBackground }
           ]}>
-          <InfoRow
-            text={`Kategori: ${item.category?.main} / ${item.category?.sub}`}
-            theme={theme}
-          />
-          <InfoRow text={`Skick: ${item.condition}`} theme={theme} />
-          <InfoRow
-            text={`Senast använd: ${
-              item.lastUsed
-                ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
-                : "Okänt"
-            }`}
-            theme={theme}
-          />
+          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+            Kategori:
+          </Text>
+          <Text style={[DetailStyle.content, { color: theme.text }]}>
+            {item.category?.main} / {item.category?.sub}
+          </Text>
+          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+            Skick:
+          </Text>
+          <Text style={[DetailStyle.content, { color: theme.text }]}>
+            {item.condition}
+          </Text>
+          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+            Senast använd:
+          </Text>
+          <Text style={[DetailStyle.content, { color: theme.text }]}>
+            {item.lastUsed
+              ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
+              : "Okänt"}
+          </Text>
         </View>
 
         <View
@@ -118,7 +101,7 @@ export default function DetailsScreen({ route, navigation }) {
                 />
               ))
             ) : (
-              <Text style={[DetailStyle.infoText, { color: theme.text }]}>
+              <Text style={[DetailStyle.content, { color: theme.text }]}>
                 Ingen färg
               </Text>
             )}
@@ -129,24 +112,20 @@ export default function DetailsScreen({ route, navigation }) {
           <View
             style={[
               DetailStyle.noteContainer,
-              {
-                backgroundColor: theme.cardBackground
-              }
+              { backgroundColor: theme.cardBackground }
             ]}>
             <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
-              Anteckningar
+              Noteringar:
             </Text>
+
             <View
               style={[
-                DetailStyle.noteContainer,
                 {
                   backgroundColor:
                     theme.background === "#121212" ? "#1A1A1A" : "#f5f5f5",
-                  borderColor: theme.borderColor,
-                  borderWidth: 1
+                  borderColor: theme.borderColor
                 }
               ]}>
-              <EvilIcons name="comment" size={24} color={theme.text} />
               <Text style={[DetailStyle.notes, { color: theme.text }]}>
                 {item.notes}
               </Text>
@@ -154,15 +133,13 @@ export default function DetailsScreen({ route, navigation }) {
           </View>
         )}
 
-        <View style={{ alignItems: "center" }}>
-          <InfoRow
-            text={`Tillagd: ${
-              item.createdAt
-                ? new Date(item.createdAt).toLocaleDateString("sv-SE")
-                : "Okänt"
-            }`}
-            theme={theme}
-          />
+        <View style={DetailStyle.centeredContainer}>
+          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
+            Tillagd:
+          </Text>
+          <Text style={[{ color: theme.text }]}>
+            {new Date(item.createdAt).toLocaleDateString("sv-SE")}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -178,9 +155,3 @@ export default function DetailsScreen({ route, navigation }) {
     </View>
   );
 }
-
-const InfoRow = ({ text, theme }) => (
-  <View style={DetailStyle.detailContainer}>
-    <Text style={[GlobalStyle.infoText, { color: theme.text }]}>{text}</Text>
-  </View>
-);
