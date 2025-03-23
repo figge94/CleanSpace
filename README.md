@@ -31,5 +31,4 @@ Follow these steps to install and run the project locally:
 
    3. Press `a` in the terminal to open the app in the emulator.
 
-:point*right:
-\_Note: This app is built for Android. Testing on iOS requires a Mac and Xcode and is not supported in this version.*
+_Note: This app is built for Android. Testing on iOS requires a Mac and Xcode and is not supported in this version._
