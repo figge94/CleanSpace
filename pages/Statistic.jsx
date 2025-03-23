@@ -5,7 +5,6 @@ import { StatisticStyle } from "../styles/pages/StatisticStyle";
 import { CardStyle } from "../styles/CardStyle";
 import { GlobalStyle } from "../styles/global/GlobalStyle";
 
-// 🔹 Komponent för statistik-kort med förbättrad design
 const StatCard = ({ title, value, theme }) => (
   <View
     style={[
@@ -15,7 +14,7 @@ const StatCard = ({ title, value, theme }) => (
         shadowColor: "#000",
         shadowOpacity: 0.1,
         shadowRadius: 5,
-        elevation: 3 // 🔹 Lägg till skugga för en snyggare effekt
+        elevation: 3
       }
     ]}>
     <Text
@@ -90,7 +89,6 @@ export default function StatisticsScreen() {
         </Text>
       ) : (
         <>
-          {/* 🔹 Sektion: Övergripande statistik */}
           <View style={[CardStyle.statsWrapper, { paddingVertical: 10 }]}>
             <StatCard
               title="Totalt antal plagg"
@@ -99,7 +97,6 @@ export default function StatisticsScreen() {
             />
           </View>
 
-          {/* 🔹 Sektion: Kläder per kategori */}
           <Text
             style={[
               GlobalStyle.subTitle,

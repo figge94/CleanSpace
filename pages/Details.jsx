@@ -2,7 +2,6 @@ import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import { useContext, useEffect } from "react";
 import { SettingsContext } from "../context/SettingsContext";
-import { GlobalStyle } from "../styles/global/GlobalStyle";
 import { BackHandler } from "react-native";
 import ButtonStyle from "../styles/ButtonStyle";
 import { TagStyle } from "../styles/TagStyle";
@@ -75,37 +74,6 @@ export default function DetailsScreen({ route, navigation }) {
               ? new Date(item.lastUsed).toLocaleDateString("sv-SE")
               : "Okänt"}
           </Text>
-        </View>
-
-        <View
-          style={[
-            DetailStyle.detailsCard,
-            { backgroundColor: theme.cardBackground }
-          ]}>
-          <Text style={[DetailStyle.sectionTitle, { color: theme.text }]}>
-            Färger:
-          </Text>
-          <View style={DetailStyle.colorContainer}>
-            {item.colors && item.colors.length > 0 ? (
-              item.colors.map((color, index) => (
-                <View
-                  key={index}
-                  style={[
-                    DetailStyle.colorCircle,
-                    {
-                      backgroundColor: color,
-                      borderColor:
-                        theme.text === "#000000" ? "#ffffff" : "#cccccc"
-                    }
-                  ]}
-                />
-              ))
-            ) : (
-              <Text style={[DetailStyle.content, { color: theme.text }]}>
-                Ingen färg
-              </Text>
-            )}
-          </View>
         </View>
 
         {item.notes && (

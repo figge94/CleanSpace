@@ -5,7 +5,7 @@ import { SettingsContext } from "../context/SettingsContext";
 import profilePic from "../assets/user.png";
 import { ProfileStyle } from "../styles/pages/ProfilePageStyle";
 import { ImageStyle } from "../styles/ImageStyle";
-import Button from "../components/Button"; // 🆕 Importera knappen
+import Button from "../components/Button";
 import { Animated } from "react-native";
 
 export default function ProfileScreen({ navigation }) {

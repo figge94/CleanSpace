@@ -15,30 +15,6 @@ export default function Card({ item, theme, onPress }) {
             {item.name}
           </Text>
 
-          <View style={{ flexDirection: "row", marginVertical: 4 }}>
-            {item.colors && item.colors.length > 0 ? (
-              item.colors.map((color, index) => (
-                <View
-                  key={index}
-                  style={{
-                    width: 16,
-                    height: 16,
-                    borderRadius: 8,
-                    backgroundColor: color,
-                    marginRight: 4,
-                    borderWidth: 1,
-                    borderColor:
-                      theme.text === "#000000" ? "#ffffff" : "#cccccc"
-                  }}
-                />
-              ))
-            ) : (
-              <Text style={[CardStyle.text, { color: theme.text }]}>
-                Ingen färg
-              </Text>
-            )}
-          </View>
-
           <Text style={[CardStyle.text, { color: theme.text }]}>
             Skick: {item.condition}
           </Text>

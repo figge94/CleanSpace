@@ -10,7 +10,6 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { TipsStyle } from "../styles/pages/TipsStyle";
 
-// ⚡️ Aktivera LayoutAnimation på Android
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental

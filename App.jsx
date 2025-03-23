@@ -24,7 +24,6 @@ SplashScreen.preventAutoHideAsync();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Funktion för att hämta ikoner dynamiskt
 const getTabBarIcon = (routeName, focused, color, size) => {
   const icons = {
     Home: focused ? "home-variant" : "home-variant-outline",
@@ -40,9 +39,8 @@ const getTabBarIcon = (routeName, focused, color, size) => {
   );
 };
 
-// 🔹 Tab.Navigator med dynamiskt tema
 function BottomTabs() {
-  const { theme } = useContext(SettingsContext); // ✅ Hämta globalt tema
+  const { theme } = useContext(SettingsContext);
 
   return (
     <Tab.Navigator
@@ -50,10 +48,10 @@ function BottomTabs() {
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) =>
           getTabBarIcon(route.name, focused, color, size),
-        tabBarActiveTintColor: theme.buttonBackground, // ✅ Ändrar färg efter tema
+        tabBarActiveTintColor: theme.buttonBackground,
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          backgroundColor: theme.cardBackground, // ✅ Ändrar bakgrund efter tema
+          backgroundColor: theme.cardBackground,
           paddingBottom: 5,
           height: 60,
           position: "absolute"
@@ -83,7 +81,6 @@ function BottomTabs() {
   );
 }
 
-//  Stack.Navigator med tema
 function MainStack() {
   return (
     <Stack.Navigator>
@@ -112,12 +109,10 @@ function MainStack() {
 }
 
 function AppContent() {
-  const { theme, darkMode } = useContext(SettingsContext); // ✅ Hämta tema
+  const { theme, darkMode } = useContext(SettingsContext);
 
   return (
-    <NavigationContainer
-      theme={darkMode ? DarkTheme : DefaultTheme} // ✅ Ändrar navigationstema
-    >
+    <NavigationContainer theme={darkMode ? DarkTheme : DefaultTheme}>
       <MainStack />
     </NavigationContainer>
   );

@@ -12,7 +12,7 @@ export default function TipsScreen({ navigation }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [showTips, setShowTips] = useState(false);
   const [randomTip, setRandomTip] = useState(null);
-  const [expandedTipId, setExpandedTipId] = useState(null); // 🔹 Ny state för öppen accordion
+  const [expandedTipId, setExpandedTipId] = useState(null);
   const fadeAnim = useState(new Animated.Value(0))[0];
 
   const categories = ["Förvaring", "Organisering", "Tvätt", "Mer utrymme"];

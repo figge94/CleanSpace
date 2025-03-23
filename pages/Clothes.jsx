@@ -1,11 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  View,
-  TouchableOpacity
-} from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import { GlobalStyle } from "../styles/global/GlobalStyle";
 import Card from "../components/Card";
@@ -13,11 +7,10 @@ import Card from "../components/Card";
 export default function ClothesScreen({ navigation }) {
   const { theme } = useContext(SettingsContext);
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]); // Håller API-data
-  const [selectedCategory, setSelectedCategory] = useState("Alla"); // 🔹 "Alla" är förvald
+  const [data, setData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("Alla");
   const [error, setError] = useState(null);
 
-  // **Hämta data från API**
   useEffect(() => {
     const getItems = async () => {
       try {
@@ -42,13 +35,11 @@ export default function ClothesScreen({ navigation }) {
     getItems();
   }, []);
 
-  // **Hämta unika kategorier**
   const categories = [
     "Alla",
     ...new Set(data.map((item) => item.category?.main || "Okänd"))
   ];
 
-  // **Filtrera kläder baserat på vald kategori**
   const filteredData =
     selectedCategory === "Alla"
       ? data
