@@ -1,7 +1,5 @@
 import * as React from "react";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -18,8 +16,6 @@ import TipsScreen from "./pages/Tips";
 import ProfileScreen from "./pages/Profile";
 import StatisticsScreen from "./pages/Statistic";
 import { SettingsProvider, SettingsContext } from "./context/SettingsContext";
-
-SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -119,20 +115,6 @@ function AppContent() {
 }
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    "Outfit-Black": require("./assets/fonts/Outfit-Black.ttf") // Kontrollera sökvägen!
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
   return (
     <SettingsProvider>
       <AppContent />

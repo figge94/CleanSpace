@@ -1,7 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Text, View, Image, SafeAreaView, ScrollView } from "react-native";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { SettingsContext } from "../context/SettingsContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { GlobalStyle } from "../styles/global/GlobalStyle";
@@ -9,30 +7,8 @@ import wardrobeImg from "../assets/wardrobe.png";
 import Button from "../components/Button";
 import { ImageStyle } from "../styles/ImageStyle";
 
-SplashScreen.preventAutoHideAsync();
-
 export default function HomeScreen({ navigation }) {
   const { theme } = useContext(SettingsContext);
-  const [isReady, setIsReady] = useState(false);
-
-  // Ladda fonter
-  const [fontsLoaded] = useFonts({
-    "Outfit-Black": require("../assets/fonts/Outfit-Black.ttf")
-  });
-
-  useEffect(() => {
-    async function prepare() {
-      if (fontsLoaded && theme) {
-        await SplashScreen.hideAsync();
-        setIsReady(true);
-      }
-    }
-    prepare();
-  }, [fontsLoaded, theme]);
-
-  if (!isReady) {
-    return null;
-  }
 
   return (
     <SafeAreaView style={[{ flex: 1, backgroundColor: theme.background }]}>
@@ -46,7 +22,7 @@ export default function HomeScreen({ navigation }) {
             <Text style={{ fontWeight: "bold", fontSize: 25 }}>
               Rensa enkelt, organisera smart
             </Text>
-            {"\n"} {/* Radbrytning */}
+            {"\n"}
             <Text style={{ fontSize: 18, opacity: 0.8 }}>
               Få full koll på din garderob snabbt och smidigt.
             </Text>
