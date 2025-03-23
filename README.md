@@ -15,7 +15,7 @@ Follow these steps to install and run the project locally:
 3. **Start the project**  
    `npm start`
 4. **Run the app on a device or emulator**  
-    **➤ On a physical Android device:**
+   **➤ On a physical Android device:**
 
    1. Install the **Expo Go** app from Google Play.
 
